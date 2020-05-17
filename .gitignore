@@ -1,0 +1,7 @@
+testes
+data
+node_modules/
+.npm
+.env
+.env.test
+anotacoes.txt
