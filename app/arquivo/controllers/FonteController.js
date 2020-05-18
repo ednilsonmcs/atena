@@ -1,47 +1,24 @@
 const Fonte = require('../models/Fonte');
-const Excel = require('exceljs');
-const testPath = './data/ciosp.xlsx';
-const fs = require('fs');
-
-const carregarWorkbook = (path) => {
-    var workbook = new Excel.Workbook();
-    return new Promise( function (resolve, reject ) {
-        try {  
-          if (fs.existsSync(path)) {
-            console.log( "output exists" );
-            // load the Excel workbook but do nothing
-            workbook.xlsx.readFile( path ).then( function() {
-              resolve( workbook );
-            });
-          } else {
-            console.log( "output doesn't exist" );
-            reject();
-          }
-        }
-        catch( err ){
-          reject();
-        }
-    });
-  }
-  
-  
+const ItensFonteController = require('../controllers/ItensFonteController');
+const { carregarWorkbook, getValuesRowByIndex } = require('../../commom/funcoes');
+const path = './data/ciosp.xlsx';
 
 module.exports = {
     async store(req,res){
         let quantidade_registros = 0;
+        let ws = null;
         //Aqui terei uma função que os dados do arquivo
-        await carregarWorkbook(testPath)
+        await carregarWorkbook(path)
         .then( workbook => {
-            let ws = workbook.getWorksheet("Plan1");
+            ws = workbook.getWorksheet("Plan1");
             quantidade_registros = ws.rowCount;
-
-            // ws.eachRow({ includeEmpty: true }, function(row, rowNumber) {
-            //     console.log("Row " + rowNumber + " = " + JSON.stringify(row.values));
-            // });
+            // console.log(getValuesRowByIndex(ws,2))            
         }).catch( err => { 
           console.error( err );
         });
 
+        ItensFonteController.store(getValuesRowByIndex(ws,2));  
+        
         const fonte = await Fonte.create({
             nome:'nome', 
             hash:'hash',
