@@ -7,7 +7,7 @@
     "node": "12.16.1"
   },
   "scripts": {
-    "start": "npx nodemon app/server.js",
+    "start": "node app/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app/server.js"
   },
