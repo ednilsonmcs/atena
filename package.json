@@ -2,7 +2,10 @@
   "name": "atena",
   "version": "1.0.0",
   "description": "Esta é uma api para Extração, Transformação (ETL) e Carga de dados para um DW",
-  "main": "index.js",
+  "main": "app/server.js",
+  "engines": {
+    "node": "12.16.1"
+  },
   "scripts": {
     "start": "nodemon app/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
