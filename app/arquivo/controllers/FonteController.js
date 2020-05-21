@@ -1,6 +1,6 @@
 const Fonte = require('../models/Fonte');
-const ItensFonteController = require('../controllers/ItensFonteController');
-const { carregarWorkbook, getValuesRowByIndex } = require('../../commom/funcoes');
+const ItensFonte = require('../models/ItensFonte');
+const { carregarWorkbook } = require('../../commom/funcoes');
 const path = './data/ciosp.xlsx';
 
 module.exports = {
@@ -11,14 +11,11 @@ module.exports = {
         await carregarWorkbook(path)
         .then( workbook => {
             ws = workbook.getWorksheet("Plan1");
-            quantidade_registros = ws.rowCount;
-            // console.log(getValuesRowByIndex(ws,2))            
+            quantidade_registros = ws.rowCount;     
         }).catch( err => { 
           console.error( err );
         });
 
-        ItensFonteController.store(getValuesRowByIndex(ws,2));  
-        
         const fonte = await Fonte.create({
             nome:'nome', 
             hash:'hash',

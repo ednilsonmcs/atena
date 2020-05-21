@@ -29,9 +29,10 @@
   "dependencies": {
     "exceljs": "^3.9.0",
     "express": "^4.17.1",
+    "moment": "^2.26.0",
     "mysql2": "^2.1.0",
-    "sequelize": "^5.21.9",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "sequelize": "^5.21.9"
   },
   "devDependencies": {
     "nodemon": "^2.0.4",

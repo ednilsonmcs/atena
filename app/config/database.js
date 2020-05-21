@@ -4,6 +4,7 @@ module.exports = {
     username: 'root',
     password: 'partenon',
     database: 'staging_area',
+    timezone: '-03:00',
     define: {
         timestamps: true,
         underscored: true,

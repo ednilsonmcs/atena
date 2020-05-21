@@ -1,5 +1,6 @@
 const Excel = require('exceljs');
 const fs = require('fs');
+const moment = require('moment');
 
 exports.carregarWorkbook = (path) => {
     var workbook = new Excel.Workbook();
@@ -29,10 +30,13 @@ exports.getValuesRow = (ws) => {
 }
 
 exports.getValuesRowByIndex = (ws,index) => {
+    const data = ws.getRow(index).values[1];
+    const hora = ws.getRow(index).values[3];
+    const datahora = data +" "+ hora;
+
     return {
-        data: ws.getRow(index).values[1],
-        dia: ws.getRow(index).values[2],
-        hora: ws.getRow(index).values[3],
+        data: moment(datahora, "DD/MM/YYYY HH:mm:ss", "pt"),
+        dia_semana: ws.getRow(index).values[2],
         endereco: ws.getRow(index).values[4],
         bairro: ws.getRow(index).values[5],
         municipio: ws.getRow(index).values[6],
@@ -44,18 +48,4 @@ exports.getValuesRowByIndex = (ws,index) => {
         descricao_finalizacao: ws.getRow(index).values[12],
         historico: ws.getRow(index).values[13],
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
