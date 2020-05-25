@@ -18,11 +18,7 @@ module.exports = {
         });
 
         //Para testes
-<<<<<<< HEAD
         // quantidade_registros = 10;
-=======
-        quantidade_registros = 10;
->>>>>>> 67a08585954d1b798eadb44053b7c9839760b44b
         for (let index = 2; index <= quantidade_registros; index++) {
             aux = getValuesRowByIndex(ws,index);
             fonte = await ItensFonte.create(aux);
