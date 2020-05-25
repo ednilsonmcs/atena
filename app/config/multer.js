@@ -2,12 +2,20 @@ const multer = require('multer');
 const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
+<<<<<<< HEAD
+const { PATH_FONTE }  = require('./env.config')
+=======
+>>>>>>> 67a08585954d1b798eadb44053b7c9839760b44b
 
 module.exports = {
     dest: path.resolve(__dirname, '..', '..', 'tmp', 'xlsx'),
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
+<<<<<<< HEAD
+            if(!fs.existsSync(PATH_FONTE)) fs.mkdirSync(PATH_FONTE, { recursive: true })
+=======
             if(!fs.existsSync(`./tmp/xlsx`)) fs.mkdirSync(`./tmp/xlsx`, { recursive: true })
+>>>>>>> 67a08585954d1b798eadb44053b7c9839760b44b
             cb(null,path.resolve(__dirname, '..', '..', 'tmp', 'xlsx'));
         },
         filename: (req, file, cb) => {
