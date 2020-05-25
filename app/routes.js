@@ -1,4 +1,7 @@
 const express = require('express');
+const multer = require('multer');
+const multerConfig = require ('./config/multer')
+
 const ChamadoController = require('./arquivo/controllers/ChamadoController');
 const FonteController = require('./arquivo/controllers/FonteController');
 const ItensFonteController = require('./arquivo/controllers/ItensFonteController');
