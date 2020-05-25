@@ -15,7 +15,10 @@ routes.post('/fonte', multer(multerConfig).single('file'), (req, res) => {
 });
 
 routes.post('/chamados', ChamadoController.store);
-routes.post('/carregarFonte', FonteController.store);
-// routes.post('/carregarFonte', ItensFonteController.store);
+routes.post('/carregarFonte', (req, res) => {
+    //Antes de chamar as controles verificar se o arquivo existe
+    FonteController.store(req, res);
+    ItensFonteController.store(req, res)
+});
 
 module.exports = routes; 
