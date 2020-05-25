@@ -3,6 +3,8 @@ const ChamadoController = require('./arquivo/controllers/ChamadoController');
 const FonteController = require('./arquivo/controllers/FonteController');
 const ItensFonteController = require('./arquivo/controllers/ItensFonteController');
 const routes = express.Router();
+const multer = require('multer');
+const multerConfig = require('./config/multer')
 
 routes.get('/', (req, res) => {
     return res.json({hello: 'World'});
