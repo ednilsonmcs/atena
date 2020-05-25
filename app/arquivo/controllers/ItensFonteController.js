@@ -17,6 +17,8 @@ module.exports = {
           console.error( err );
         });
 
+        //Para testes
+        quantidade_registros = 10;
         for (let index = 2; index <= quantidade_registros; index++) {
             aux = getValuesRowByIndex(ws,index);
             fonte = await ItensFonte.create(aux);
