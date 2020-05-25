@@ -1,7 +1,8 @@
 const Fonte = require('../models/Fonte');
 const ItensFonte = require('../models/ItensFonte');
 const { carregarWorkbook } = require('../../commom/funcoes');
-const path = './data/ciosp.xlsx';
+const fs = require('fs');
+const { PATH_FONTE } = require('../../config/env.config');
 
 module.exports = {
     async store(req,res){
@@ -24,5 +25,18 @@ module.exports = {
             carregado: false
         });
     return res.json(fonte);
+    },
+    listar(req,res){
+        let listFiles = [];
+        fs.readdir(PATH_FONTE, (err, files) => {
+            files.forEach(name => {
+                let metaFile = name.split('-');
+                let metaType = name.split('.');
+                hash = metaFile[0];
+                type = metaType[1];
+                listFiles.push({ hash, name, type })
+            });
+            return res.json(listFiles);
+        });
     }
 }
