@@ -12,16 +12,17 @@ routes.get('/', (req, res) => {
 })
 
 routes.get('/fonte', FonteController.listar);
+routes.get('/fonte/:hash', FonteController.listarByHash);
+routes.post('/fonte', multer(multerConfig).single('file'), (req, res) => { return res.json({msg: 'Arquivo criado com suceso!'}) });
 
-routes.post('/fonte', multer(multerConfig).single('file'), (req, res) => {
-    return res.json({msg: 'Arquivo criado com suceso!'})
-});
+/*
+    1. Antes de chamar as controles verificar se o arquivo existe    
+    2. Quando o arquivo existir, verificar se já foi carregado
+*/
+routes.post('/carregarFonte', (req, res) => { FonteController.store(req, res); });
 
+//Chamados
 routes.post('/chamados', ChamadoController.store);
-routes.post('/carregarFonte', (req, res) => {
-    //Antes de chamar as controles verificar se o arquivo existe
-    FonteController.store(req, res);
-    ItensFonteController.store(req, res)
-});
+
 
 module.exports = routes; 

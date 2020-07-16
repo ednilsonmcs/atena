@@ -1,23 +1,47 @@
 const Excel = require('exceljs');
 const fs = require('fs');
 const moment = require('moment');
+const util = require('util');
+const readdir = util.promisify(fs.readdir)
 
-exports.carregarWorkbook = (path) => {
-    var workbook = new Excel.Workbook();
-    return new Promise( function (resolve, reject ) {
-        try {  
-            if (fs.existsSync(path)) {
-            console.log( "output exists" );
-            // load the Excel workbook but do nothing
-            workbook.xlsx.readFile( path ).then( function() {
-                resolve( workbook );
+exports.getFile = async (path,hash) => {
+    let filePath = null;
+    let arquivos = null;
+
+    try {
+        arquivos = await readdir(path);
+        if(arquivos === undefined){
+            return false;
+        }else{
+            arquivos.forEach(function (file) {
+                let nameFile = file.split("-");
+                if(nameFile[0] ==  hash){
+                    filePath = path+"/"+file;
+                }
             });
-            } else {
-            console.log( "output doesn't exist" );
-            reject();
-            }
         }
-        catch( err ){
+        return filePath;
+    } catch (error) {        
+        console.log(error);
+        return false;
+    }
+
+}
+
+exports.carregarWorksheet = async (path) => { 
+    return new Promise(async (resolve, reject) => {
+        let worksheet;
+        
+        if (fs.existsSync(path)) {
+            const workbook = new Excel.Workbook();
+            var sheet = 'Plan1';
+            await workbook.xlsx.readFile(path)
+            .then(() => { worksheet = workbook.getWorksheet(sheet); })    
+        } 
+
+        if(true){
+            resolve(worksheet);
+        }else{
             reject();
         }
     });
