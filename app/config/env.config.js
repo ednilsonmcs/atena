@@ -1,3 +1,3 @@
 module.exports = {
-    PATH_FONTE: './tmp/xlsx'
+	PATH_FONTE: "./tmp/xlsx"
 };
