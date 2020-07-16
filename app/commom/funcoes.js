@@ -16,7 +16,6 @@ exports.getFile = async (path,hash) => {
             arquivos.forEach(function (file) {
                 let nameFile = file.split("-");
                 if(nameFile[0] ==  hash){
-                    console.log(nameFile[0])
                     filePath = path+"/"+file;
                 }
             });
