@@ -18,10 +18,9 @@ routes.post("/fonte", multer(multerConfig).single("file"), (req, res) => { retur
     1. Antes de chamar as controles verificar se o arquivo existe    
     2. Quando o arquivo existir, verificar se j� foi carregado
 */
-routes.post("/carregarFonte", (req, res) => { FonteController.store(req, res); });
+routes.post("/extrairFonte", (req, res) => { FonteController.store(req, res); });
 
 //Chamados
 routes.post("/chamados", ChamadoController.store);
-
 
 module.exports = routes; 

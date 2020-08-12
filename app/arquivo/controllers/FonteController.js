@@ -7,7 +7,8 @@ const { PATH_FONTE } = require("../../config/env.config");
 module.exports = {
 	async store(req,res){
 		const hash = req.body.hash;
-		console.log(hash);
+
+		//Verificar se existe um hash extraido
 		let fonte;
 		let quantidade_registros = 0;
 		const andressOfFile = await getFile(PATH_FONTE,hash);
