@@ -22,6 +22,10 @@ class ItensFontes extends Model {
 			tableName: "itensfonte",
 		});
 	}
+
+	static associate(models){
+		this.belongsTo(models.Fonte, {foreignKey: 'fonte_id', as: 'fonte'});
+	}
 }
 
 module.exports = ItensFontes;

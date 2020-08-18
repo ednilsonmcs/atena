@@ -58,7 +58,7 @@ module.exports = {
 				allowNull: true
 			},
 			created_at: {
-				type: Sequelize.DATE,
+				type: Sequelize.DATE, 
 				allowNull: false 
 			},
 			updated_at:{
@@ -68,7 +68,7 @@ module.exports = {
 		});
 	},
 
-	down: (queryInterface) => {
+	down: (queryInterface ) => {
 		return queryInterface.dropTable("itensfonte");
 	}
 };

@@ -51,17 +51,17 @@ module.exports = {
 						flag = true;
 					});
 
-					async function insertItensFonte(rows) {
+					async function insertItensFonte(rows,fonte_id) {
 						for(const row of rows){
 							try {
-								await ItensFonte.create(row);
+								await ItensFonte.create({fonte_id, ...row});
 							} catch (error) {
 								console.log(error);
 							} 
 						}
 					}
                     
-					await insertItensFonte(rows);
+					await insertItensFonte(rows,fonte.id);
 
 				});
 
