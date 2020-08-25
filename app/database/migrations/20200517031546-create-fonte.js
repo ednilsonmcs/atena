@@ -26,7 +26,7 @@ module.exports = {
 				allowNull: false
 			},
 			carregado:{
-				type: Sequelize.STRING,
+				type: Sequelize.BOOLEAN,
 				allowNull: false,
 				defaultValue: false
 			},
