@@ -25,7 +25,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(30)
      },
-      });
+   },
+	{
+	  schema: 'dw'
+    });
   },
 
   down: (queryInterface, Sequelize) => {

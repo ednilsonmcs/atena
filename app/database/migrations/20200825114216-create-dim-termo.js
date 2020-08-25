@@ -23,12 +23,15 @@ module.exports = {
           allowNull: false,
           type: Sequelize.INTEGER,
           references: {
-            model: 'dim_tipo',
+            model: {tableName: 'dim_tipo', schema: 'dw'},
             key: 'id'
           },
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE'
         }  
+      },
+      {
+        schema: 'dw'
       });
   },
 

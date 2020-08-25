@@ -3,7 +3,7 @@ module.exports = {
 	host: "localhost",
 	username: "root",
 	password: "32312095",
-	database: "staging_area",
+	database: "atena",
 	timezone: "-03:00",
 	define: {
 		timestamps: true,

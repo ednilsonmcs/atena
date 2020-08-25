@@ -6,7 +6,7 @@ module.exports = {
        termo_id: {
           primaryKey: true,
           references: {
-            model: 'dim_termo',
+            model: { tableName: 'dim_termo', schema: 'dw'},
             key: 'id'           
           }, 
           onUpdate: 'CASCADE',
@@ -16,7 +16,7 @@ module.exports = {
        fato_id: {
           primaryKey: true,
           references: {
-            model: 'fato_chamado',
+            model: { tableName: 'fato_chamado', schema: 'dw'},
             key: 'id'           
           }, 
           onUpdate: 'CASCADE',
@@ -26,13 +26,16 @@ module.exports = {
        descricao_id: {
           primaryKey: true,
           references: {
-            model: 'fato_chamado',
+            model: { tableName: 'fato_chamado', schema: 'dw'},
             key: 'id'           
           }, 
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
           type: Sequelize.INTEGER 
        },
+      },
+      {
+        schema: 'dw'
       });
   },
 

@@ -25,6 +25,9 @@ module.exports = {
 				type: Sequelize.DATE,
 				allowNull: false
 			}
+		},
+		{
+		  schema: 'sa'
 		});
 
 

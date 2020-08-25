@@ -3,7 +3,10 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
      return queryInterface.addConstraint(
-      "fonte",
+      {
+        tableName: 'fonte',
+        schema: 'sa'
+      },
       ["hash"],
       {
         type: "unique",
@@ -12,6 +15,9 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-     return queryInterface.removeConstraint('fonte', 'hashUnico');
+     return queryInterface.removeConstraint({
+      tableName: 'fonte',
+      schema: 'sa'
+    }, 'hashUnico');
   }
 };

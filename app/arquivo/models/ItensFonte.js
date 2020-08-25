@@ -20,6 +20,7 @@ class ItensFontes extends Model {
 			freezeTableName: true,
 			sequelize: connection,
 			tableName: "itensfonte",
+			schema: 'sa'
 		});
 	}
 
