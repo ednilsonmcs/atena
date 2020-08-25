@@ -39,11 +39,7 @@ exports.carregarWorksheet = async (path) => {
 				.then(() => { worksheet = workbook.getWorksheet(sheet); });    
 		} 
 
-		if(true){
-			resolve(worksheet);
-		}else{
-			reject();
-		}
+		if(worksheet){ resolve(worksheet); }else{ reject(); }
 	});
 };
 

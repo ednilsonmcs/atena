@@ -12,7 +12,7 @@ class Fonte extends Model {
 			freezeTableName: true,
 			sequelize: connection,
 			tableName: "fonte",
-			schema: 'sa'
+			schema: "sa"
 		});
 	}
 }

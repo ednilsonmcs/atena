@@ -73,26 +73,26 @@ module.exports = {
 			});
 
 	},async list(req,res){
-        let fonte = await Fonte.findAll();
-        if(fonte == []){
-            return res.status(404).json({message: "Não há registros!"});
-        }else{
-            return res.status(200).json(fonte);
-        }
-    },async listarByHash(req,res){
-        let hash = req.params.hash
-        let fonte = await Fonte.findOne({where:{hash}});
-        if(fonte){
-            return res.status(200).json(fonte);
-        }else{
-            return res.status(404).json({message: "Não há registros para estes arquivo!"});
-        }
-    },async deleteByHash(req,res){
-        let hash = req.params.hash
-        if(await Fonte.destroy({where:{hash}})){
-            return res.status(200).json({message: "Registros excluídos!"});
-        }else{
-            return res.status(404).json({message: "Não há registros para estes arquivo!"});
-        }
-    }
+		let fonte = await Fonte.findAll();
+		if(fonte == []){
+			return res.status(404).json({message: "Não há registros!"});
+		}else{
+			return res.status(200).json(fonte);
+		}
+	},async listarByHash(req,res){
+		let hash = req.params.hash;
+		let fonte = await Fonte.findOne({where:{hash}});
+		if(fonte){
+			return res.status(200).json(fonte);
+		}else{
+			return res.status(404).json({message: "Não há registros para estes arquivo!"});
+		}
+	},async deleteByHash(req,res){
+		let hash = req.params.hash;
+		if(await Fonte.destroy({where:{hash}})){
+			return res.status(200).json({message: "Registros excluídos!"});
+		}else{
+			return res.status(404).json({message: "Não há registros para estes arquivo!"});
+		}
+	}
 };

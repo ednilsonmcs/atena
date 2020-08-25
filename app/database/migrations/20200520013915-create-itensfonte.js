@@ -67,7 +67,7 @@ module.exports = {
 			}  
 		},
 		{
-		  schema: 'sa'
+			schema: "sa"
 		});
 	},
 

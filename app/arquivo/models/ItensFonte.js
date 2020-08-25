@@ -20,12 +20,12 @@ class ItensFontes extends Model {
 			freezeTableName: true,
 			sequelize: connection,
 			tableName: "itensfonte",
-			schema: 'sa'
+			schema: "sa"
 		});
 	}
 
 	static associate(models){
-		this.belongsTo(models.Fonte, {foreignKey: 'fonte_id', as: 'fonte'});
+		this.belongsTo(models.Fonte, {foreignKey: "fonte_id", as: "fonte"});
 	}
 }
 
