@@ -1,34 +1,27 @@
-
-const fs = require("fs");
-const { PATH_FONTE } = require("../../config/env.config");
+const ItensFonte = require("../../arquivo/models/ItensFonte");
+const Fonte = require("../../arquivo/models/Fonte");
+const ItensFontes = require("../../arquivo/models/ItensFonte");
 
 module.exports = {
-	async listar(req,res){
-		let listFiles = [];
-		fs.readdir(PATH_FONTE, (err, files) => {
-			files.forEach(name => {
-				let metaFile = name.split("-");
-				let metaType = name.split(".");
-				let hash = metaFile[0];
-				let type = metaType[1];
-				listFiles.push({ hash, name, type });
-			});
-			return res.json(listFiles);
+	async store(req,res){
+		let fontes = await Fonte.findAll({
+			where:{
+				carregado: false,
+			}
 		});
-	},
-	async listarByHash(req,res){
-		let listFiles = [];
-		fs.readdir(PATH_FONTE, (err, files) => {
-			files.forEach(name => {
-				let metaFile = name.split("-");
-				let metaType = name.split(".");
-				let hash = metaFile[0];
-				let type = metaType[1];
-				if(req.params.hash == hash){
-					listFiles.push({ hash, name, type });
+
+		await fontes.map(async fonte => {
+			console.log(fonte.hash);
+			let itens = await ItensFontes.findAll({
+				where:{
+					fonte_id: fonte.id
 				}
 			});
-			return res.json(listFiles);
+			await itens.map(async item => {
+				console.log(item.bairro);
+			});
 		});
+
+		return res.json({message: 'Hello Word'});
 	}
 };

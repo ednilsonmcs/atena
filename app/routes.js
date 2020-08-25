@@ -5,6 +5,7 @@ const multerConfig = require ("./config/multer");
 const ChamadoController = require("./arquivo/controllers/ChamadoController");
 const FonteController = require("./arquivo/controllers/FonteController");
 const StagingAreaController = require("./arquivo/controllers/StagingAreaController");
+const TempoController = require("./dw/controllers/TempoController");
 const routes = express.Router();
 
 routes.get("/", (req, res) => {
@@ -25,5 +26,9 @@ routes.delete("/stagingArea/:hash", (req, res) => { StagingAreaController.delete
 
 //Chamados
 routes.post("/chamados", ChamadoController.store);
+
+//Dw
+routes.post("/tempo", TempoController.store);
+
 
 module.exports = routes; 
