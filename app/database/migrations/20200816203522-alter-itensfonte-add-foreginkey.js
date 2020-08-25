@@ -2,16 +2,28 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('itensfonte','fonte_id',{
+    return queryInterface.addColumn({
+      tableName: 'itensfonte',
+      schema: 'sa'
+    },'fonte_id',{
       type: Sequelize.INTEGER,
       allowNull: false,
-      references: { model: 'fonte', key: 'id' },
+      references: { 
+        model: {
+          tableName: 'fonte',
+          schema: 'sa'
+        }, 
+        key: 'id' 
+      },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
   },
 
   down: (queryInterface, Sequelize) => {
-     return queryInterface.removeColumn('itensfonte', 'fonte_id')
+     return queryInterface.removeColumn({
+      tableName: 'itensfonte',
+      schema: 'sa'
+    }, 'fonte_id')
   }
 };

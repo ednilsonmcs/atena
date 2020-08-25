@@ -13,7 +13,7 @@ module.exports = {
           allowNull: false,
           primaryKey: true,
           references: {
-            model: 'junk_descricao',
+            model: {tableName: 'junk_descricao', schema: 'dw'},
             key: 'id'
           },
           onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ module.exports = {
         tempo_id: {
           allowNull: false,
           references: {
-            model: 'dim_tempo',
+            model: {tableName: 'dim_tempo', schema: 'dw'},
             key: 'id'
           },
           onUpdate: 'CASCADE',
@@ -33,7 +33,7 @@ module.exports = {
         endereco_id: {
           allowNull: false,
           references: {
-            model: 'dim_endereco',
+            model: {tableName: 'dim_endereco', schema: 'dw'},
             key: 'id'
           },
           onUpdate: 'CASCADE',
@@ -43,14 +43,16 @@ module.exports = {
         finalizacao_id: {
           allowNull: false,
           references: {
-            model: 'dim_descricao_finalizacao',
+            model: {tableName: 'dim_descricao_finalizacao', schema: 'dw'},
             key: 'id'
           },
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
           type: Sequelize.INTEGER
-        }
-         
+        }         
+      },
+      {
+        schema: 'dw'
       });
   },
 

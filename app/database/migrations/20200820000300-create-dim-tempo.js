@@ -89,6 +89,9 @@ module.exports = {
           allowNull: false, 
           type: Sequelize.INTEGER
         }
+      },
+      {
+        schema: 'dw'
       });
   },
 

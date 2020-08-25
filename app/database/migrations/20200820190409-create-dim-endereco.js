@@ -29,6 +29,9 @@ module.exports = {
         allowNull:false, 
         type:Sequelize.STRING(40)
        },
+      },
+      {
+        schema: 'dw'
       });
   },
 

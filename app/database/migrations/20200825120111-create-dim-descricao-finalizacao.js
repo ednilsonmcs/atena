@@ -13,6 +13,9 @@ module.exports = {
          allowNull: false,
          type: Sequelize.STRING(34)
        }
+      },
+      {
+        schema: 'dw'
       });
   },
 
