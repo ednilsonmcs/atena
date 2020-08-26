@@ -31,148 +31,204 @@ class Tempo extends Model {
 		});
 	}
 
-	static getMes(datetime){
-		return (new Date(datetime)).getMonth();
+	static async getMes(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve((new Date(datetime)).getMonth()); }else{ reject(); }
+		});
 	};
 
-	static getAno(datetime){return (new Date(datetime)).getFullYear()};
+	static async getAno(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve((new Date(datetime)).getFullYear()); }else{ reject(); }
+		});
+	};
 
-	static getDiaSemana(datetime){return (new Date(datetime)).getDay()};
+	static async getDiaSemana(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve((new Date(datetime)).getDay()); }else{ reject(); }
+		});
+	};
 
-	static getDia(datetime){return (new Date(datetime)).getDate()};
+	static async getDia(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve((new Date(datetime)).getDate()); }else{ reject(); }
+		});
+	};
 
-	static isAnoBissexto(datetime){
-		return(this.getAno(datetime) % 400 == 0) || (this.getAno(datetime) % 4 == 0 && this.getAno(datetime) % 100 != 0);
+	static async isAnoBissexto(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve((this.getAno(datetime) % 400 == 0) || (this.getAno(datetime) % 4 == 0 && this.getAno(datetime) % 100 != 0)); }else{ reject(); }
+		});
 	};
 
 
-	static isDiaUtil(datetime){ return ((new Date(datetime)).getDay() != 0 && (new Date(datetime)).getDay() != 6 && !this.isFeriado(datetime))};
+	static async isDiaUtil(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve(((new Date(datetime)).getDay() != 0 && (new Date(datetime)).getDay() != 6 && !this.isFeriado(datetime))); }else{ reject(); }
+		});
+	};
 	
 	//Sexta, Sábado ou Domingo
-	static isFimSemana(datetime){ return ((new Date(datetime)).getDay() == 0 || (new Date(datetime)).getDay() == 5 || (new Date(datetime)).getDay() == 6)};
-
-	static isFeriado(datetime){return false;};
-
-	static isPosFeriado(datetime){
-		return 'Hello Word!';
+	static async isFimSemana(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve(((new Date(datetime)).getDay() == 0 || (new Date(datetime)).getDay() == 5 || (new Date(datetime)).getDay() == 6)); }else{ reject(); }
+		});
 	};
 
-	static isPreFeriado(datetime){
-		return 'Hello Word!';
+	static async isFeriado(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve(false); }else{ reject(); }
+		});
 	};
 
-	static getNomeDiaSemana(datetime){
-		let nomeDiaSemana = new Array ("DOMINGO", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SÁBADO");
-		return nomeDiaSemana[this.getDiaSemana(datetime)];
+	static async isPosFeriado(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve(false); }else{ reject(); }
+		});
 	};
 
-	static getNomeFeriado(datetime){
-		return 'Nataaaaaaaaaaaal!';
+	static async isPreFeriado(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve(false); }else{ reject(); }
+		});
+	};
+
+	static async getNomeDiaSemana(datetime){
+		return new Promise(async (resolve, reject) => {
+			let nomeDiaSemana = new Array ("DOMINGO", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SÁBADO");
+			if(datetime != null){ resolve(nomeDiaSemana[await this.getDiaSemana(datetime)]); }else{ reject(); }
+		});
+	};
+
+	static async getNomeFeriado(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve('Nataaaaaaaaaaaal!'); }else{ reject(); }
+		});
 	};	
 	
-	static getNomeMes(datetime){
-		let nomeMes = new Array ("JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "AGOSTO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO");
-		return nomeMes[this.getMes(datetime)];
+	static async getNomeMes(datetime){
+		return new Promise(async (resolve, reject) => {
+			let nomeMes = new Array ("JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO");
+			if(datetime != null){ resolve(nomeMes[await this.getMes(datetime)]); }else{ reject(); }
+		});
 	};
 
-	static getQuinzena(datetime){
-		return ((new Date(datetime)).getDate() < 16)?1:2;
+	static async getQuinzena(datetime){
+		return new Promise(async (resolve, reject) => {
+			if(datetime != null){ resolve(((new Date(datetime)).getDate() < 16)?1:2); }else{ reject(); }
+		});
 	};
 
-	static getBimestre(datetime){
-		switch ((new Date(datetime)).getMonth()) {
-            case 0:
-            case 1:
-                return 1;
-                break;
-            case 2:
-            case 3:
-                return 2;
-                break;
-            case 4:
-            case 5:
-                return 3;
-                break;
-            case 6:
-            case 7:
-                return 4;
-                break;
-            case 8:
-            case 9:
-                return 5;
-                break;
-            case 10:
-            case 11:
-                return 6;
-                break;
-        }
+	static async getBimestre(datetime){
+		return new Promise(async (resolve, reject) => {
+			let bimestre = null;
+			switch ((new Date(datetime)).getMonth()) {
+				case 0:
+				case 1:
+					bimestre = 1;
+					break;
+				case 2:
+				case 3:
+					bimestre = 2;
+					break;
+				case 4:
+				case 5:
+					bimestre = 3;
+					break;
+				case 6:
+				case 7:
+					bimestre = 4;
+					break;
+				case 8:
+				case 9:
+					bimestre = 5;
+					break;
+				case 10:
+				case 11:
+					bimestre = 6;
+					break;
+			}
+			if(bimestre != null){ resolve(bimestre); }else{ reject(); }
+		});
 	};
 
-	static getTrimestre(datetime){
-		switch ((new Date(datetime)).getMonth()) {
-            case 0:
-            case 1:
-            case 2:
-                return 1;
-                break;
-            case 3:
-            case 4:
-            case 5:
-                return 2;
-                break;
-            case 6:
-            case 7:
-            case 8:
-                return 3;
-                break;
-            case 9:
-            case 10:
-            case 11:
-                return 4;
-                break;
-        }
+	static async getTrimestre(datetime){
+		return new Promise(async (resolve, reject) => {
+			let trimestre = null;
+			switch ((new Date(datetime)).getMonth()) {
+				case 0:
+				case 1:
+				case 2:
+					trimestre = 1;
+					break;
+				case 3:
+				case 4:
+				case 5:
+					trimestre = 2;
+					break;
+				case 6:
+				case 7:
+				case 8:
+					trimestre = 3;
+					break;
+				case 9:
+				case 10:
+				case 11:
+					trimestre = 4;
+					break;
+			}
+			if(trimestre != null){ resolve(trimestre); }else{ reject(); }
+		});
 	};
 
-	static getSemestre(datetime){
-		switch ((new Date(datetime)).getMonth()) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                return 1;
-                break;
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-                return 2;
-                break;
-        }
+	static async getSemestre(datetime){
+		return new Promise(async (resolve, reject) => {
+			let semestre = null;
+			switch ((new Date(datetime)).getMonth()) {
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+					semestre = 1;
+					break;
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+					semestre = 2;
+					break;
+			}
+			if(semestre != null){ resolve(semestre); }else{ reject(); }
+		});
 	};
 
 
-	static getTurno(date,time){
-		let a =new Date(date+" 00:00:00");// Inicio madrugada
-        let b =new Date(date+" 06:00:00");// Inicio manhã
-        let c =new Date(date+" 12:00:00");// Inicio tarde
-        let d =new Date(date+" 18:00:00");// Inicio noite
-        let e =new Date(date+" 23:59:59");// Fim noite
-		
-		let f=new Date(date+" "+time);
-
-		if ((f >= a) && (f < b)) {
-            return "MADRUGADA";
-        } else if ((f >= b) && (f < c)) {
-            return "MANHÃ";
-        } else if ((f >= c) && (f < d)) {
-            return "TARDE";
-        } else if ((f >= d) && (f <= e)) {
-            return "NOITE";
-		}		
+	static async getTurno(date,time){
+		return new Promise(async (resolve, reject) => {
+			let turno = null;
+			let a =new Date(date+" 00:00:00");// Inicio madrugada
+			let b =new Date(date+" 06:00:00");// Inicio manhã
+			let c =new Date(date+" 12:00:00");// Inicio tarde
+			let d =new Date(date+" 18:00:00");// Inicio noite
+			let e =new Date(date+" 23:59:59");// Fim noite
+			
+			let f=new Date(date+" "+time);
+	
+			if ((f >= a) && (f < b)) {
+				turno = "MADRUGADA";
+			} else if ((f >= b) && (f < c)) {
+				turno = "MANHÃ";
+			} else if ((f >= c) && (f < d)) {
+				turno = "TARDE";
+			} else if ((f >= d) && (f <= e)) {
+				turno = "NOITE";
+			}		
+			if(turno != null){ resolve(turno); }else{ reject(); }
+		});
 	};
 
 }
