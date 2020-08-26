@@ -10,12 +10,12 @@ module.exports = {
 				allowNull: false
 			},
 			data : {
-				type:Sequelize.DATE,
-				allowNull: true
+				type:Sequelize.DATEONLY,
+				allowNull: false
 			},
 			hora : {
 				type:Sequelize.TIME,
-				allowNull: true
+				allowNull: false
 			},
 			dia_semana :{
 				type:Sequelize.STRING,
