@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 class ItensFontes extends Model {
 	static init(connection){
 		super.init({
-			data: DataTypes.DATE,
+			data: DataTypes.DATEONLY,
 			dia_semana: DataTypes.STRING,
 			hora: DataTypes.TIME,
 			endereco: DataTypes.TEXT,

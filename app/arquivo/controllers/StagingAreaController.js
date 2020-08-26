@@ -37,8 +37,8 @@ module.exports = {
 					//Ignorando a primeira linha, cabe�alho
 					if(flag){
 						let data = row.getCell(1).value;
-						data += " "+row.getCell(3).value;
 						let dia_semana = row.getCell(2).value;
+						let hora = " "+row.getCell(3).value;
 						let endereco = row.getCell(4).value;
 						let bairro = row.getCell(5).value;
 						let municipio = row.getCell(6).value;
@@ -50,8 +50,8 @@ module.exports = {
 						let descricao_finalizacao = row.getCell(12).value;
 						let historico = row.getCell(13).value;
 
-						data = new Date( data.substr(6,4), data.substr(3,2), data.substr(0,2), data.substr(11,2), data.substr(14,2), data.substr(17,2) );
-						rows.push({data, dia_semana, endereco, bairro, municipio, cod_tipo, descricao, cod_sub_tipo, desc_sub_tipo, sit_encontrada, descricao_finalizacao, historico});
+						data = new Date(data);
+						rows.push({data, dia_semana, hora, endereco, bairro, municipio, cod_tipo, descricao, cod_sub_tipo, desc_sub_tipo, sit_encontrada, descricao_finalizacao, historico});
 					}
 					flag = true;
 				});
