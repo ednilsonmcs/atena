@@ -13,6 +13,10 @@ module.exports = {
 				type:Sequelize.DATE,
 				allowNull: true
 			},
+			hora : {
+				type:Sequelize.TIME,
+				allowNull: true
+			},
 			dia_semana :{
 				type:Sequelize.STRING,
 				allowNull: true
