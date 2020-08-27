@@ -25,6 +25,14 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.STRING(30)
 			},
+			created_at: {
+				type: Sequelize.DATE,
+				allowNull: false 
+			},
+			updated_at:{
+				type: Sequelize.DATE,
+				allowNull: false
+			}  
 		},
 		{
 			schema: "dw"

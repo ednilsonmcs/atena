@@ -12,7 +12,15 @@ module.exports = {
 			descricao_chamado: {
 				allowNull: false,
 				type: Sequelize.TEXT("long")
-			}
+			},
+			created_at: {
+				type: Sequelize.DATE,
+				allowNull: false 
+			},
+			updated_at:{
+				type: Sequelize.DATE,
+				allowNull: false
+			}  
 		},
 		{
 			schema: "dw"
