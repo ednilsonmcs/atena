@@ -49,8 +49,9 @@ module.exports = {
 						let sit_encontrada = row.getCell(11).value;
 						let descricao_finalizacao = row.getCell(12).value;
 						let historico = row.getCell(13).value;
+						
+						data = data.substr(6,4) +"-"+ data.substr(3,2) +"-"+ data.substr(0,2);
 
-						data = new Date(data);
 						rows.push({data, dia_semana, hora, endereco, bairro, municipio, cod_tipo, descricao, cod_sub_tipo, desc_sub_tipo, sit_encontrada, descricao_finalizacao, historico});
 					}
 					flag = true;
