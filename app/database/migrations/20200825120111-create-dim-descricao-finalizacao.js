@@ -12,7 +12,15 @@ module.exports = {
 			nome: {
 				allowNull: false,
 				type: Sequelize.STRING(34)
-			}
+			},
+			created_at: {
+				type: Sequelize.DATE,
+				allowNull: false 
+			},
+			updated_at:{
+				type: Sequelize.DATE,
+				allowNull: false
+			}  
 		},
 		{
 			schema: "dw"
