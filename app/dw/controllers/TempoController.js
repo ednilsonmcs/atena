@@ -2,9 +2,27 @@ const ItensFonte = require("../../arquivo/models/ItensFonte");
 const Fonte = require("../../arquivo/models/Fonte");
 const Tempo = require("../../dw/models/Tempo");
 const connection  = require("../../database/index");
+var convert = require('xml-js');
+
+const fs = require("fs");
+const util = require("util");
+const readdir = util.promisify(fs.readdir);
 
 module.exports = {
 	async store(req,res){
+		//http://www.calendario.com.br/api/api_feriados.php?token=[ZWRpbWNzN0BnbWFpbC5jb20maGFzaD01MjY0Njk4OQ]&ano=2013&estado=SERGIPE&cidade="+municipio.toUpperCase()
+		fs.readFile( './app/commom/feriados.xml', function(err, data) {
+			var result1 = convert.xml2json(data, {compact: false, spaces: 4});
+			JSON.parse(result1).elements.forEach(element => {
+				element.elements.forEach(e => {
+					if(typeof e.elements[0].elements !== "undefined"){
+						let data = e.elements[0].elements[0].text;
+						let feriado = e.elements[1].elements[0].text;
+						console.log(data+" "+feriado);
+					}
+				});
+			})
+		 });
 		let fontes = await Fonte.findAll({
 			where:{
 				carregado: false,

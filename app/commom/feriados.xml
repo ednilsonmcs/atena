@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<events>
+  <location>
+    <city></city>
+    <state>SERGIPE</state>
+    <country>Brasil</country>
+  </location>
+  <event>
+    <date>01/01/2013</date>
+    <name>Ano Novo</name>
+    <description>O Ano-Novo ou Réveillon é um evento que acontece quando uma cultura celebra o fim de um ano e o começo do próximo. A celebração do evento é também chamada Réveillon, termo oriundo do verbo francês réveiller, que em português significa DESPERTAR</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/ano-novo.php</link>
+  </event>
+  <event>
+    <date>12/02/2013</date>
+    <name>Carnaval</name>
+    <description>Carnaval NÃO é um feriado oficial, é Ponto Facultativo, ou seja, cabe às empresas e orgão públicos decidirem se trabalharão ou não.</description>
+    <type>Facultativo</type>
+    <type_code>4</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/carnaval.php</link>
+  </event>
+  <event>
+    <date>11/02/2013</date>
+    <name>Carnaval</name>
+    <description>Ponto Facultativo, ou seja, cabe às empresas e orgão públicos decidirem se trabalharão ou não.</description>
+    <type>Facultativo</type>
+    <type_code>4</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/carnaval.php</link>
+  </event>
+  <event>
+    <date>13/02/2013</date>
+    <name>Carnaval</name>
+    <description>Ponto Facultativo até às 14h.</description>
+    <type>Facultativo</type>
+    <type_code>4</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/carnaval.php</link>
+  </event>
+  <event>
+    <date>30/05/2013</date>
+    <name>Corpus Christi</name>
+    <description>Ponto Facultativo no País, mas Feriado Municipal em algumas cidades.. Corpus Christi, expressão latina que significa Corpo de Cristo, é uma festa Cristã realizada na quinta-feira seguinte ao domingo da Santíssima Trindade.</description>
+    <type>Facultativo</type>
+    <type_code>4</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/corpus-christi.php</link>
+  </event>
+  <event>
+    <date>20/11/2013</date>
+    <name>Consciência Negra</name>
+    <description>Apesar de ser comemorado em todo o território nacional, conforme indica a Lei Federal nº 12.519, de 10 de novembro de 2011, o Dia Nacional de Zumbi e da Consciência Negra não é feriado. No entanto, alguns municípios decretam feriado municipal neste dia.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/consciencia-negra.php</link>
+  </event>
+  <event>
+    <date>01/04/2013</date>
+    <name>Dia da Mentira</name>
+    <description>Dia da mentira, dia das petas, dia dos tolos ou dia dos bobos.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>12/05/2013</date>
+    <name>Dia das Mães</name>
+    <description>O Dia das Mães teve a sua origem no princípio do século XX, quando uma jovem norte-americana, Anna Jarvis, perdeu sua mãe e entrou em completa depressão. Preocupadas com aquele sofrimento, algumas amigas tiveram a ideia de criar uma data para comemorar o dia das mães.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>02/11/2013</date>
+    <name>Dia de Finados</name>
+    <description>O Dia de Finados ou Dia dos Fiéis Defuntos, (conhecido ainda como Dia dos Mortos no México), é celebrado pela Igreja Católica no dia 2 de novembro e é Feriado Nacional.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/dia-de-finados.php</link>
+  </event>
+  <event>
+    <date>12/10/2013</date>
+    <name>Nossa Senhora Aparecida</name>
+    <description>Nossa Senhora da Conceição Aparecida é a padroeira do Brasil. Sua festa é celebrada em 12 de outubro, um feriado nacional desde que o Papa João Paulo II consagrou a Basílica em 1980.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/nossa-senhora-aparecida.php</link>
+  </event>
+  <event>
+    <date>21/04/2013</date>
+    <name>Dia de Tiradentes</name>
+    <description>Joaquim José da Silva Xavier, o Tiradentes foi um dentista, tropeiro, minerador, comerciante, militar e ativista político. É reconhecido como mártir da Inconfidência Mineira e herói nacional. O dia de sua execução, 21 de abril, é feriado nacional.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/dia-de-tiradentes.php</link>
+  </event>
+  <event>
+    <date>17/10/2013</date>
+    <name>Dia do Comércio</name>
+    <description>Comemoração do dia do comércio. Em algumas cidades do Brasil o comércio poderá fechar, dependendo de acordos entre os sindicatos e patrões.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>15/10/2013</date>
+    <name>Dia do Professor</name>
+    <description>FERIADO ESCOLAR - No dia 15 de outubro de 1827 (dia consagrado à educadora Santa Teresa de Ávila), o Imperador do Brasil, Pedro I,  baixou um Decreto Imperial que criou o Ensino Elementar no Brasil. Pelo decreto, "todas as cidades, vilas e lugarejos teriam suas escolas de primeiras letras"</description>
+    <type>Facultativo</type>
+    <type_code>4</type_code>
+    <link>http://www.calendario.com.br/docs/dia-do-professor.html</link>
+  </event>
+  <event>
+    <date>28/10/2013</date>
+    <name>Dia do Servidor Público</name>
+    <description>O dia do servidor público é feriado apenas para funcionários públicos.</description>
+    <type>Facultativo</type>
+    <type_code>4</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>01/05/2013</date>
+    <name>Dia do Trabalho</name>
+    <description>O Dia do Trabalhador ou Dia Internacional dos Trabalhadores é celebrado anualmente no dia 1º de Maio em numerosos países do mundo, sendo feriado no Brasil, em Portugal e em outros países.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/dia-do-trabalho.php</link>
+  </event>
+  <event>
+    <date>12/06/2013</date>
+    <name>Dia dos Namorados</name>
+    <description>O Dia dos Namorados ou Dia de São Valentim é uma data comemorativa na qual se celebra a união amorosa entre casais sendo comum a troca de cartões e presentes.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>11/08/2013</date>
+    <name>Dia dos Pais</name>
+    <description>Em 1909, nos Estados Unidos, Sonora Luise resolveu criar um dia dedicado aos pais, motivada pela admiração que sentia pelo seu pai, William Jackson Smart. O interesse pela data difundiu-se da cidade de Spokane para todo o Estado de Washington e para o Mundo.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>07/09/2013</date>
+    <name>Independência do Brasil</name>
+    <description>O Dia da Indepência do Brasil, oficialmente a data comemorada é a de 7 de setembro de 1822, em que ocorreu o chamado "Grito do Ipiranga".</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/independencia-do-brasil.php</link>
+  </event>
+  <event>
+    <date>15/11/2013</date>
+    <name>Proclamação da República</name>
+    <description>A Proclamação da República foi um levante político-militar ocorrido em 15 de novembro de 1889 que instaurou a forma Republicana Federativa Presidencialista de governo no Brasil, derrubando a Monarquia e, por conseguinte, o imperador dom Pedro II.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/proclamacao-da-republica.php</link>
+  </event>
+  <event>
+    <date>25/12/2013</date>
+    <name>Natal</name>
+    <description>O Natal é comemorado anualmente em 25 de Dezembro. Originalmente destinado a celebrar o nascimento anual do Deus Sol no solstício de inverno, foi adaptado pela Igreja Católica no 3o século d.C., para permitir a conversão dos povos pagãos sob o domínio do Império Romano, passando a comemorar o nascimento de Jesus de Nazaré.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/natal.php</link>
+  </event>
+  <event>
+    <date>31/03/2013</date>
+    <name>Páscoa</name>
+    <description>A Páscoa é um evento religioso cristão, normalmente considerado pelas igrejas ligadas a esta corrente religiosa como a maior e a mais importante festa da Cristandade. Na Páscoa os cristãos celebram a Ressurreição de Jesus Cristo depois da sua morte.</description>
+    <type>Dia Convencional</type>
+    <type_code>9</type_code>
+    <link></link>
+  </event>
+  <event>
+    <date>29/03/2013</date>
+    <name>Sexta-Feira Santa</name>
+    <description>Também chamada de "Sexta Feira da Paixão" é a sexta-feira que ocorre antes do domingo de Páscoa, e é o dia que os cristãos lembram da crucificação de Cristo.</description>
+    <type>Feriado Nacional</type>
+    <type_code>1</type_code>
+    <link>http://www.calendario.com.br/feriados-nacionais/sexta-feira-santa.php</link>
+  </event>
+</events>
