@@ -66,7 +66,7 @@ module.exports = {
 				type: Sequelize.STRING(14)
 			},
 			nome_feriado: {
-				allowNull: false, 
+				allowNull: true, 
 				type: Sequelize.STRING(30)
 			},
 			quinzena: {
