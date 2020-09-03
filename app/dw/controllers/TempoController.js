@@ -2,27 +2,22 @@ const ItensFonte = require("../../arquivo/models/ItensFonte");
 const Fonte = require("../../arquivo/models/Fonte");
 const Tempo = require("../../dw/models/Tempo");
 const connection  = require("../../database/index");
-var convert = require('xml-js');
-
-const fs = require("fs");
-const util = require("util");
-const readdir = util.promisify(fs.readdir);
 
 module.exports = {
 	async store(req,res){
-		//http://www.calendario.com.br/api/api_feriados.php?token=[ZWRpbWNzN0BnbWFpbC5jb20maGFzaD01MjY0Njk4OQ]&ano=2013&estado=SERGIPE&cidade="+municipio.toUpperCase()
-		fs.readFile( './app/commom/feriados.xml', function(err, data) {
-			var result1 = convert.xml2json(data, {compact: false, spaces: 4});
-			JSON.parse(result1).elements.forEach(element => {
-				element.elements.forEach(e => {
-					if(typeof e.elements[0].elements !== "undefined"){
-						let data = e.elements[0].elements[0].text;
-						let feriado = e.elements[1].elements[0].text;
-						console.log(data+" "+feriado);
-					}
-				});
-			})
-		 });
+		
+		//test
+		let itensTest = await ItensFonte.findAll({
+			where:{
+				fonte_id: 5
+			}
+		});
+
+		for(i of itensTest){
+			let feriado = await Tempo.getFeriado(i.data);
+			console.log(feriado);
+		}
+
 		let fontes = await Fonte.findAll({
 			where:{
 				carregado: false,
@@ -31,8 +26,6 @@ module.exports = {
 		
 		async function transformacao(){
 			let tempos = [];
-
-
 
 			for(fonte of fontes){
 				let itens = await ItensFonte.findAll({
@@ -53,6 +46,7 @@ module.exports = {
 
 						if(itemExistente === null){
 							const datetime = item.data+" "+item.hora;
+							const feriado = await Tempo.getFeriado(item.data);
 							let tempo = {
 								data: item.data,
 								hora: item.hora,
@@ -64,11 +58,11 @@ module.exports = {
 								ano_bissexto: await Tempo.isAnoBissexto(datetime),
 								dia_util: await Tempo.isDiaUtil(datetime),
 								fim_semana: await Tempo.isFimSemana(datetime),
-								feriado: await Tempo.isFeriado(datetime),
-								pos_feriado: false,
-								pre_feriado: false,
+								feriado: (feriado.nome)?true:false,
+								pos_feriado: (feriado.pos)?true:false,
+								pre_feriado: (feriado.pre)?true:false,
 								nome_dia_semana: await Tempo.getNomeDiaSemana(datetime),
-								nome_feriado: await Tempo.getNomeFeriado(datetime),
+								nome_feriado: (feriado.nome)?feriado.nome:null,
 								quinzena: await Tempo.getQuinzena(datetime),
 								nome_mes: await Tempo.getNomeMes(datetime),
 								bimestre: await Tempo.getBimestre(datetime),

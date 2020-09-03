@@ -1,4 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
+const convert = require('xml-js');
+const fs = require("fs");
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
+const moment = require('moment');
 
 class Tempo extends Model {
 	static init(connection){
@@ -74,6 +79,39 @@ class Tempo extends Model {
 			if(datetime != null){ resolve(((new Date(datetime)).getDay() == 0 || (new Date(datetime)).getDay() == 5 || (new Date(datetime)).getDay() == 6)); }else{ reject(); }
 		});
 	};
+
+	static async getFeriado(dataOcorrencia){
+		//http://www.calendario.com.br/api/api_feriados.php?token=[ZWRpbWNzN0BnbWFpbC5jb20maGFzaD01MjY0Njk4OQ]&ano=2013&estado=SERGIPE&cidade="+municipio.toUpperCase()
+		
+		let pre = moment([parseInt(dataOcorrencia.substr(0,4)), (parseInt(dataOcorrencia.substr(5,2)) - 1), parseInt(dataOcorrencia.substr(8,2))]); // ou moment() para a data atual
+		let pos = moment([parseInt(dataOcorrencia.substr(0,4)), (parseInt(dataOcorrencia.substr(5,2)) - 1), parseInt(dataOcorrencia.substr(8,2))]); // ou moment() para a data atual
+		
+		pre = (pre.add(-1, 'day').format("YYYY-MM-DD"));
+		pos = (pos.add(1, 'day').format("YYYY-MM-DD"));
+
+		let feriado = {nome: false, pre: false, pos: false};
+		let file = await readFile('./app/commom/feriados.xml');
+		let xml = convert.xml2json(file, {compact: false, spaces: 4});
+		let events = JSON.parse(xml).elements[0].elements;
+		events.forEach(e=>{
+			if(typeof e.elements[0].elements !== "undefined"){
+				let dataFeriado = e.elements[0].elements[0].text;
+				dataFeriado = dataFeriado.substr(6,4)+"-"+dataFeriado.substr(3,2)+"-"+dataFeriado.substr(0,2);
+				
+				if(pre == dataFeriado){
+					feriado = {nome: false, pre: false, pos: true}
+				}
+
+				if(pos == dataFeriado){
+					feriado = {nome: false, pre: true, pos: false}
+				}
+				if(dataOcorrencia == dataFeriado){
+					feriado = {nome: e.elements[1].elements[0].text, pre: false, pos: false}
+				}
+			}
+		});
+		return feriado;
+	}
 
 	static async isFeriado(datetime){
 		return new Promise(async (resolve, reject) => {
