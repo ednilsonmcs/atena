@@ -5,18 +5,6 @@ const connection  = require("../../database/index");
 
 module.exports = {
 	async store(req,res){
-		
-		//test
-		let itensTest = await ItensFonte.findAll({
-			where:{
-				fonte_id: 5
-			}
-		});
-
-		for(i of itensTest){
-			let feriado = await Tempo.getFeriado(i.data);
-			console.log(feriado);
-		}
 
 		let fontes = await Fonte.findAll({
 			where:{
@@ -27,7 +15,7 @@ module.exports = {
 		async function transformacao(){
 			let tempos = [];
 
-			for(fonte of fontes){
+			for(let fonte of fontes){
 				let itens = await ItensFonte.findAll({
 					where:{
 						fonte_id: fonte.id
@@ -36,7 +24,7 @@ module.exports = {
 
 				const t = await connection.transaction();
 				try{
-					for(item of itens){
+					for(let item of itens){
 						let itemExistente = await Tempo.findOne({
 							where:{
 								data: item.data,
@@ -56,26 +44,26 @@ module.exports = {
 								dia_semana: await Tempo.getDiaSemana(datetime),
 								dia: await Tempo.getDia(datetime),
 								ano_bissexto: await Tempo.isAnoBissexto(datetime),
-								dia_util: await Tempo.isDiaUtil(datetime),
+								dia_util: await Tempo.isDiaUtil(datetime,feriado),
 								fim_semana: await Tempo.isFimSemana(datetime),
-								feriado: (feriado.nome)?true:false,
-								pos_feriado: (feriado.pos)?true:false,
-								pre_feriado: (feriado.pre)?true:false,
+								feriado: await Tempo.isFeriado(feriado),
+								pos_feriado: feriado.pos,
+								pre_feriado: feriado.pre,
 								nome_dia_semana: await Tempo.getNomeDiaSemana(datetime),
-								nome_feriado: (feriado.nome)?feriado.nome:null,
+								nome_feriado: feriado.nome,
 								quinzena: await Tempo.getQuinzena(datetime),
 								nome_mes: await Tempo.getNomeMes(datetime),
 								bimestre: await Tempo.getBimestre(datetime),
 								trimestre: await Tempo.getTrimestre(datetime),
 								semestre: await Tempo.getSemestre(datetime),
-							}
+							};
 							let temp = await Tempo.create(tempo,{ transaction: t });
-							tempos.push(temp)
+							tempos.push(temp);
 						}
 					}				
 					await t.commit();
 				}catch(error){
-					console.log(error)
+					console.log(error);
 					await t.rollback();
 				}
 
@@ -86,9 +74,9 @@ module.exports = {
 		}
 		
 		if((await Fonte.findAll()).length === 0){
-			res.status(404).json({message: 'Ainda nenhuma fonte foi extraída para Staging Area!'});
+			res.status(404).json({message: "Ainda nenhuma fonte foi extraída para Staging Area!"});
 		}else if((await Fonte.findAll({ where:{ carregado: false, } })).length === 0){
-			res.status(404).json({message: 'Todas fontes selecionadas já foram carregadas anteriomente!'});
+			res.status(404).json({message: "Todas fontes selecionadas já foram carregadas anteriomente!"});
 		}else{
 			await transformacao();
 		}

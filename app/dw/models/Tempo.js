@@ -67,9 +67,10 @@ class Tempo extends Model {
 	};
 
 
-	static async isDiaUtil(datetime){
+	static async isDiaUtil(datetime,feriado){
 		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve(((new Date(datetime)).getDay() != 0 && (new Date(datetime)).getDay() != 6 && !this.isFeriado(datetime))); }else{ reject(); }
+			let isFeriado = await this.isFeriado(feriado);
+			if(datetime != null){ resolve(((new Date(datetime)).getDay() != 0 && (new Date(datetime)).getDay() != 6 && !isFeriado)); }else{ reject(); }
 		});
 	};
 	
@@ -106,16 +107,16 @@ class Tempo extends Model {
 					feriado = {nome: false, pre: true, pos: false}
 				}
 				if(dataOcorrencia == dataFeriado){
-					feriado = {nome: e.elements[1].elements[0].text, pre: false, pos: false}
+					feriado = {nome: (e.elements[1].elements[0].text).toUpperCase(), pre: false, pos: false}
 				}
 			}
 		});
 		return feriado;
 	}
 
-	static async isFeriado(datetime){
+	static async isFeriado(feriado){
 		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve(false); }else{ reject(); }
+			if(feriado != null){ resolve((feriado.nome)?true:false); }else{ reject(); }
 		});
 	};
 
@@ -257,13 +258,13 @@ class Tempo extends Model {
 			let f=new Date(date+" "+time);
 	
 			if ((f >= a) && (f < b)) {
-				turno = "MADRUGADA";
+				turno = 'MADRUGADA';
 			} else if ((f >= b) && (f < c)) {
-				turno = "MANHÃ";
+				turno = 'MANHÃ';
 			} else if ((f >= c) && (f < d)) {
-				turno = "TARDE";
+				turno = 'TARDE';
 			} else if ((f >= d) && (f <= e)) {
-				turno = "NOITE";
+				turno = 'NOITE';
 			}		
 			if(turno != null){ resolve(turno); }else{ reject(); }
 		});
