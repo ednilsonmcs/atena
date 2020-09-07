@@ -50,7 +50,7 @@ module.exports = {
 								pos_feriado: feriado.pos,
 								pre_feriado: feriado.pre,
 								nome_dia_semana: await Tempo.getNomeDiaSemana(datetime),
-								nome_feriado: feriado.nome,
+								nome_feriado: (feriado.nome)?feriado.nome:null,
 								quinzena: await Tempo.getQuinzena(datetime),
 								nome_mes: await Tempo.getNomeMes(datetime),
 								bimestre: await Tempo.getBimestre(datetime),
