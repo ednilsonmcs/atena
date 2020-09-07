@@ -122,8 +122,9 @@ class Tempo extends Model {
 
 	static async getNomeDiaSemana(datetime){
 		return new Promise(async (resolve, reject) => {
+			let index = await this.getDiaSemana(datetime) - 1;
 			let nomeDiaSemana = new Array ("DOMINGO", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SÁBADO");
-			if(datetime != null){ resolve(nomeDiaSemana[await this.getDiaSemana(datetime)]); }else{ reject(); }
+			if(datetime != null){ resolve(nomeDiaSemana[index]); }else{ reject(); }
 		});
 	};
 	

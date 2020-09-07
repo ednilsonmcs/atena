@@ -14,7 +14,7 @@ module.exports = {
 		
 		async function transformacao(){
 			let tempos = [];
-
+			const t = await connection.transaction();
 			for(let fonte of fontes){
 				let itens = await ItensFonte.findAll({
 					where:{
@@ -22,9 +22,9 @@ module.exports = {
 					}
 				});
 
-				const t = await connection.transaction();
+
 				try{
-					for(let item of itens){
+ 					for(const item of itens){
 						let itemExistente = await Tempo.findOne({
 							where:{
 								data: item.data,
@@ -61,15 +61,16 @@ module.exports = {
 							tempos.push(temp);
 						}
 					}				
-					await t.commit();
 				}catch(error){
 					console.log(error);
 					await t.rollback();
+					return res.status(400).json({error: error});
 				}
 
-				fonte.carregado = true;
-				await fonte.save();
+				await fonte.save({ transaction: t });
+
 			}
+			await t.commit();
 			return res.status(200).json({tempo: tempos});
 		}
 		
