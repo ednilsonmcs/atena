@@ -38,7 +38,7 @@ class Tempo extends Model {
 
 	static async getMes(datetime){
 		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve((new Date(datetime)).getMonth()); }else{ reject(); }
+			if(datetime != null){ resolve((new Date(datetime)).getMonth() + 1); }else{ reject(); }
 		});
 	};
 
@@ -50,7 +50,7 @@ class Tempo extends Model {
 
 	static async getDiaSemana(datetime){
 		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve((new Date(datetime)).getDay()); }else{ reject(); }
+			if(datetime != null){ resolve((new Date(datetime)).getDay() + 1); }else{ reject(); }
 		});
 	};
 
@@ -120,30 +120,13 @@ class Tempo extends Model {
 		});
 	};
 
-	static async isPosFeriado(datetime){
-		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve(false); }else{ reject(); }
-		});
-	};
-
-	static async isPreFeriado(datetime){
-		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve(false); }else{ reject(); }
-		});
-	};
-
 	static async getNomeDiaSemana(datetime){
 		return new Promise(async (resolve, reject) => {
+			let index = await this.getDiaSemana(datetime) - 1;
 			let nomeDiaSemana = new Array ("DOMINGO", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SÁBADO");
-			if(datetime != null){ resolve(nomeDiaSemana[await this.getDiaSemana(datetime)]); }else{ reject(); }
+			if(datetime != null){ resolve(nomeDiaSemana[index]); }else{ reject(); }
 		});
 	};
-
-	static async getNomeFeriado(datetime){
-		return new Promise(async (resolve, reject) => {
-			if(datetime != null){ resolve('Nataaaaaaaaaaaal!'); }else{ reject(); }
-		});
-	};	
 	
 	static async getNomeMes(datetime){
 		return new Promise(async (resolve, reject) => {
