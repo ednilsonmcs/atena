@@ -67,17 +67,17 @@ module.exports = {
 					return res.status(400).json({error: error});
 				}
 
-				await fonte.save({ transaction: t });
+				//await fonte.save({ transaction: t });
 
 			}
 			await t.commit();
-			return res.status(200).json({tempo: tempos});
+			return (tempos.length === 0)? res.status(400).json({message: "Todos tempos já haviam sido inseridos!"}): res.status(200).json({tempo: tempos});
 		}
 		
 		if((await Fonte.findAll()).length === 0){
-			res.status(404).json({message: "Ainda nenhuma fonte foi extraída para Staging Area!"});
+			res.status(400).json({message: "Ainda nenhuma fonte foi extraída para Staging Area!"});
 		}else if((await Fonte.findAll({ where:{ carregado: false, } })).length === 0){
-			res.status(404).json({message: "Todas fontes selecionadas já foram carregadas anteriomente!"});
+			res.status(400).json({message: "Todas fontes selecionadas já foram carregadas anteriomente!"});
 		}else{
 			await transformacao();
 		}

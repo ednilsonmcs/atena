@@ -15,7 +15,8 @@ class ItensFontes extends Model {
 			desc_sub_tipo: DataTypes.STRING,
 			sit_encontrada: DataTypes.TEXT,
 			descricao_finalizacao: DataTypes.TEXT,
-			historico: DataTypes.TEXT
+			historico: DataTypes.TEXT,
+			estado: DataTypes.STRING
 		},{
 			freezeTableName: true,
 			sequelize: connection,

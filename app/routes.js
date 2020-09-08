@@ -6,6 +6,7 @@ const ChamadoController = require("./arquivo/controllers/ChamadoController");
 const FonteController = require("./arquivo/controllers/FonteController");
 const StagingAreaController = require("./arquivo/controllers/StagingAreaController");
 const TempoController = require("./dw/controllers/TempoController");
+const EnderecoController = require("./dw/controllers/EnderecoController");
 const routes = express.Router();
 
 routes.get("/", (req, res) => {
@@ -29,6 +30,7 @@ routes.post("/chamados", ChamadoController.store);
 
 //Dw
 routes.post("/tempo", TempoController.store);
+routes.post("/endereco", EnderecoController.store);
 
 
 module.exports = routes; 
