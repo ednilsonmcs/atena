@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-class endereco extends Model {
+class Endereco extends Model {
 	static init(connection){
 		super.init({
 			logradouro: DataTypes.STRING,
@@ -18,4 +18,4 @@ class endereco extends Model {
 
 }
 
-module.exports = endereco;
+module.exports = Endereco;
