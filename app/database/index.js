@@ -5,6 +5,7 @@ const Chamado = require("../arquivo/models/Chamado");
 const Fonte = require("../arquivo/models/Fonte");
 const ItensFonte = require("../arquivo/models/ItensFonte");
 const Tempo = require("../dw/models/Tempo");
+const Endereco = require("../dw/models/Endereco");
 
 const connection = new Sequelize(dbConfig);
 
@@ -14,5 +15,6 @@ ItensFonte.init(connection);
 ItensFonte.associate(connection.models);
 
 Tempo.init(connection);
+Endereco.init(connection);
 
 module.exports = connection;
