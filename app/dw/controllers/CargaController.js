@@ -4,11 +4,12 @@ const ItensFonte = require("../../arquivo/models/ItensFonte");
 const Endereco = require("../../dw/models/Endereco");
 const Tempo = require("../../dw/models/Tempo");
 const JunkDescricao = require("../../dw/models/JunkDescricao");
+const DescricaoFinalizacao = require("../../dw/models/DescricaoFinalizacao");
 
 module.exports = {
 	async store(req,res){
 
-		async function cargaFatoTermo(itens,transaction) {
+		async function cargaFatoTermo(itens) {
 			for(const item of itens){
 	
 			}
@@ -17,7 +18,7 @@ module.exports = {
 			});
 		}
 		
-		async function cargaFatoChamado(itens,transaction) {
+		async function cargaFatoChamado(itens) {
 			for(const item of itens){
 	
 			}
@@ -26,16 +27,18 @@ module.exports = {
 			});
 		}
 		
-		async function cargaDescricaoFinalizacao(itens,transaction) {
+		async function cargaDescricaoFinalizacao(itens) {
 			for(const item of itens){
-	
-			}
+				if(await DescricaoFinalizacao.findOne({ where: {nome: item.descricao_finalizacao}}) === null){
+					await DescricaoFinalizacao.create({nome: item.descricao_finalizacao})
+				}
+			} 
 			return new Promise(async (resolve, reject) => {
 				if(itens != null){ resolve({message: "Carga realizada com sucesso!"});}else{reject();}
 			});
 		}
 		
-		async function cargaDimTermo(itens,transaction) {
+		async function cargaDimTermo(itens) {
 			for(const item of itens){
 	
 			}
@@ -44,7 +47,7 @@ module.exports = {
 			});
 		}
 
-		async function cargaDimTipo(itens,transaction) {
+		async function cargaDimTipo(itens) {
 			for(const item of itens){
 	
 			}
@@ -53,7 +56,7 @@ module.exports = {
 			});
 		}
 		
-		async function cargaEndereco(itens,transaction) {
+		async function cargaEndereco(itens) {
 			const federacao = 'BRA';
 			for(const item of itens){
 				if(await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao } }) === null){
@@ -64,7 +67,7 @@ module.exports = {
 						estado: item.estado,
 						federacao
 					};
-					await Endereco.create(endereco,{ transaction });
+					await Endereco.create(endereco);
 				}
 			}
 			return new Promise(async (resolve, reject) => {
@@ -72,7 +75,7 @@ module.exports = {
 			});
 		}
 
-		async function cargaTempo(itens,transaction) {
+		async function cargaTempo(itens) {
 			for(const item of itens){
 				if(await Tempo.findOne({ where:{ data: item.data, hora: item.hora } }) === null){
 					const datetime = item.data+" "+item.hora;
@@ -99,7 +102,7 @@ module.exports = {
 						trimestre: await Tempo.getTrimestre(datetime),
 						semestre: await Tempo.getSemestre(datetime),
 					};
-					await Tempo.create(tempo,{ transaction });
+					await Tempo.create(tempo);
 				}
 			}
 			return new Promise(async (resolve, reject) => {
@@ -107,14 +110,14 @@ module.exports = {
 			});
 		}
 
-		async function cargaJunkDescricao(itens,transaction) {
+		async function cargaJunkDescricao(itens) {
 			for(const item of itens){
 				//Preprocessar
 				let  descricao_chamado = item.historico;
 				descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(descricao_chamado))));
 
 				if(await JunkDescricao.findOne({where:{descricao_chamado: descricao_chamado}}) == null){
-					await JunkDescricao.create({ descricao_chamado: descricao_chamado },{ transaction });
+					await JunkDescricao.create({ descricao_chamado: descricao_chamado });
 				}
 			}
 			return new Promise(async (resolve, reject) => {
@@ -124,7 +127,7 @@ module.exports = {
 
 		async function carga() {
 			const {fontesid, tabelas, userid} = await req.body;
-			const t = await connection.transaction();
+			//const t = await connection.transaction();
 			try {
 				if(typeof(fontesid) !== 'undefined' && fontesid.length > 0){
 					let fontes = await Fonte.findAll({
@@ -144,28 +147,28 @@ module.exports = {
 								try {
 									switch(tabela){
 										case "dim_tempo":
-											await cargaTempo(itens,t);
+											await cargaTempo(itens);
 											break;
 										case "dim_endereco":
-											await cargaEndereco(itens,t);
+											await cargaEndereco(itens);
 											break;
 										case "dim_descricao_finalizacao":
-											await cargaDescricaoFinalizacao(itens,t);
+											await cargaDescricaoFinalizacao(itens);
 											break;
 										case "dim_termo":
-											await cargaDimTermo(itens,t);
+											await cargaDimTermo(itens);
 											break;
 										case "dim_tipo":
-											await cargaDimTipo(itens,t);
+											await cargaDimTipo(itens);
 											break;
 										case "junk_descricao":
-											await cargaJunkDescricao(itens,t);
+											await cargaJunkDescricao(itens);
 											break;
 										case "fato_termo":
-											await cargaFatoTermo(itens,t);
+											await cargaFatoTermo(itens);
 											break;
 										case "fato_chamado":
-											await cargaFatoChamado(itens,t);
+											await cargaFatoChamado(itens);
 											break;											
 									}
 								} catch (error) {
@@ -173,20 +176,19 @@ module.exports = {
 								}
 							}
 						}else{			
-							await t.rollback();	
+							//await t.rollback();	
 							res.status(400).json({message: "Ao menos uma tabela do DW deve ser selecionada!"});
 						}				
 					}
 				}else{
-					await t.rollback();
+					//await t.rollback();
 					res.status(400).json({message: "Ao menos uma fonte de dados deve ser selecionada!"});
 				}			
 			} catch (error) {
-				await t.rollback();
+				//await t.rollback();
 				res.status(400).json({message: error});
 			}
-	
-			await t.commit();
+			//await t.commit();
 			res.status(200).json({message: "Cargas realizadas com sucesso!"});
 		}
 
