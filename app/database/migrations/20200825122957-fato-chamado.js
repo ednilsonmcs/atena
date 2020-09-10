@@ -5,7 +5,7 @@ module.exports = {
 		return queryInterface.createTable("fato_chamado", { 
 			id: {
 				allowNull: false,
-				autoIncremente: true,
+				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},

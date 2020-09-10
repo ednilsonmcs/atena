@@ -5,10 +5,12 @@ const Endereco = require("../../dw/models/Endereco");
 const Tempo = require("../../dw/models/Tempo");
 const JunkDescricao = require("../../dw/models/JunkDescricao");
 const DescricaoFinalizacao = require("../../dw/models/DescricaoFinalizacao");
+const Chamado = require("../../dw/models/Chamado");
 
 module.exports = {
 	async store(req,res){
-
+		const federacao = 'BRA';
+		
 		async function cargaFatoTermo(itens) {
 			for(const item of itens){
 	
@@ -20,10 +22,18 @@ module.exports = {
 		
 		async function cargaFatoChamado(itens) {
 			for(const item of itens){
-	
+				let fato_chamado;
+				let descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))));
+				let junk_descricao = await JunkDescricao.findOne({where:{descricao_chamado}});
+				let tempo = await Tempo.findOne({ where:{ data: item.data, hora: item.hora }});
+				let endereco = await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao }});
+				let descricao_finalizacao = await DescricaoFinalizacao.findOne({ where: {nome: item.descricao_finalizacao}});
+			
+				if(junk_descricao && tempo && endereco && descricao_finalizacao)
+					fato_chamado = await Chamado.create({ descricao_id: junk_descricao.id, tempo_id: tempo.id, endereco_id: endereco.id, finalizacao_id: descricao_finalizacao.id })
 			}
 			return new Promise(async (resolve, reject) => {
-				if(itens != null){ resolve({message: "Carga realizada com sucesso!"});}else{reject();}
+				if(typeof(fato_chamado) != 'undefined'){ resolve({message: "Carga realizada com sucesso!"});}else{reject({message: "Fato sem dimensões."});}
 			});
 		}
 		
@@ -57,9 +67,8 @@ module.exports = {
 		}
 		
 		async function cargaEndereco(itens) {
-			const federacao = 'BRA';
 			for(const item of itens){
-				if(await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao } }) === null){
+				if(await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao }}) === null){
 					let endereco = {
 						logradouro: item.endereco,
 						bairro: item.bairro,
@@ -77,7 +86,7 @@ module.exports = {
 
 		async function cargaTempo(itens) {
 			for(const item of itens){
-				if(await Tempo.findOne({ where:{ data: item.data, hora: item.hora } }) === null){
+				if(await Tempo.findOne({ where:{ data: item.data, hora: item.hora }}) === null){
 					const datetime = item.data+" "+item.hora;
 					const feriado = await Tempo.getFeriado(item.data);
 					let tempo = {
@@ -178,15 +187,18 @@ module.exports = {
 						}else{			
 							//await t.rollback();	
 							res.status(400).json({message: "Ao menos uma tabela do DW deve ser selecionada!"});
+							return false;
 						}				
 					}
 				}else{
 					//await t.rollback();
 					res.status(400).json({message: "Ao menos uma fonte de dados deve ser selecionada!"});
+					return false;
 				}			
 			} catch (error) {
 				//await t.rollback();
 				res.status(400).json({message: error});
+				return false;
 			}
 			//await t.commit();
 			res.status(200).json({message: "Cargas realizadas com sucesso!"});
