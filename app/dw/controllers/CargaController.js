@@ -172,17 +172,18 @@ module.exports = {
 											break;
 										case "junk_descricao":
 											await cargaJunkDescricao(itens);
-											break;
-										case "fato_termo":
-											await cargaFatoTermo(itens);
-											break;
-										case "fato_chamado":
-											await cargaFatoChamado(itens);
 											break;											
 									}
 								} catch (error) {
 									console.log(error)
 								}
+							}
+							// Quando passada tabelas dimensões e fatos, só posso tentar realizar a carga das fatos depois das dimensões. Por isso as codições a seguir não estão no switch acima.
+							if(tabelas.indexOf("") !== -1){
+								await cargaFatoTermo(itens);
+							}
+							if(tabelas.indexOf("fato_chamado") !== -1){
+								await cargaFatoChamado(itens);
 							}
 						}else{			
 							//await t.rollback();	
