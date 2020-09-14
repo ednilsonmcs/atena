@@ -21,8 +21,8 @@ module.exports = {
 		}
 		
 		async function cargaFatoChamado(itens) {
+			let fato_chamado;
 			for(const item of itens){
-				let fato_chamado;
 				let descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))));
 				let junk_descricao = await JunkDescricao.findOne({where:{descricao_chamado}});
 				let tempo = await Tempo.findOne({ where:{ data: item.data, hora: item.hora }});
