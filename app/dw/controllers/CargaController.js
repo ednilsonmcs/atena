@@ -6,6 +6,7 @@ const Tempo = require("../../dw/models/Tempo");
 const JunkDescricao = require("../../dw/models/JunkDescricao");
 const DescricaoFinalizacao = require("../../dw/models/DescricaoFinalizacao");
 const Chamado = require("../../dw/models/Chamado");
+const Tipo = require("../../dw/models/Tipo");
 
 module.exports = {
 	async store(req,res){
@@ -58,6 +59,10 @@ module.exports = {
 		}
 
 		async function cargaDimTipo(itens) {
+			let count = await Tipo.findAll({attributes: ['id']});
+			if(count.length == 0){
+				//Ler "Dicionário de Tipos"
+			}
 			for(const item of itens){
 	
 			}
@@ -146,6 +151,7 @@ module.exports = {
 					});
 					for(let fonte of fontes){
 						let itens = await ItensFonte.findAll({
+							attributes: ['id'],
 							where:{
 								fonte_id: fonte.id
 							}
@@ -205,9 +211,9 @@ module.exports = {
 			res.status(200).json({message: "Cargas realizadas com sucesso!"});
 		}
 
-		if((await Fonte.findAll()).length === 0){
+		if((await Fonte.findAll({attributes: ['id']})).length === 0){
 			res.status(400).json({message: "Ainda nenhuma fonte foi extraída para Staging Area!"});
-		}else if((await Fonte.findAll({ where:{ carregado: false, } })).length === 0){
+		}else if((await Fonte.findAll({ attributes: ['id'], where:{ carregado: false } })).length === 0){
 			res.status(400).json({message: "Todas fontes selecionadas já foram carregadas anteriomente!"});
 		}else{
 			await carga();

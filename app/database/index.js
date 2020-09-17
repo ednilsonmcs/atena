@@ -9,10 +9,10 @@ const Endereco = require("../dw/models/Endereco");
 const JunkDescricao = require("../dw/models/JunkDescricao");
 const DescricaoFinalizacao = require("../dw/models/DescricaoFinalizacao");
 const Chamado = require("../dw/models/Chamado");
+const Tipo = require("../dw/models/Tipo");
 
 const connection = new Sequelize(dbConfig);
 
-Chamado.init(connection);
 Fonte.init(connection);
 ItensFonte.init(connection);
 ItensFonte.associate(connection.models);
@@ -21,5 +21,7 @@ Tempo.init(connection);
 Endereco.init(connection);
 JunkDescricao.init(connection);
 DescricaoFinalizacao.init(connection);
+Chamado.init(connection);
 Chamado.associate(connection.models)
+Tipo.init(connection);
 module.exports = connection;
