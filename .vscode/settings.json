@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/429205ce-8ff2-451a-84df-d3dfbb5c5df3/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/atena",
+    "appService.deploySubpath": "."
+}
