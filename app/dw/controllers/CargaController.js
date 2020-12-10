@@ -91,32 +91,37 @@ module.exports = {
 
 		async function cargaTempo(itens) {
 			for(const item of itens){
-				if(await Tempo.findOne({ where:{ data: item.data, hora: item.hora }}) === null){
-					const datetime = item.data+" "+item.hora;
-					const feriado = await Tempo.getFeriado(item.data);
-					let tempo = {
-						data: item.data,
-						hora: item.hora,
-						turno: await Tempo.getTurno(item.data,item.hora),
-						mes: await Tempo.getMes(datetime),
-						ano: await Tempo.getAno(datetime),
-						dia_semana: await Tempo.getDiaSemana(datetime),
-						dia: await Tempo.getDia(datetime),
-						ano_bissexto: await Tempo.isAnoBissexto(datetime),
-						dia_util: await Tempo.isDiaUtil(datetime,feriado),
-						fim_semana: await Tempo.isFimSemana(datetime),
-						feriado: await Tempo.isFeriado(feriado),
-						pos_feriado: feriado.pos,
-						pre_feriado: feriado.pre,
-						nome_dia_semana: await Tempo.getNomeDiaSemana(datetime),
-						nome_feriado: (feriado.nome)?feriado.nome:null,
-						quinzena: await Tempo.getQuinzena(datetime),
-						nome_mes: await Tempo.getNomeMes(datetime),
-						bimestre: await Tempo.getBimestre(datetime),
-						trimestre: await Tempo.getTrimestre(datetime),
-						semestre: await Tempo.getSemestre(datetime),
-					};
-					await Tempo.create(tempo);
+				try{
+					if(await Tempo.findOne({ where:{ data: item.data, hora: item.hora }}) === null){
+						const datetime = item.data+" "+item.hora;
+						const feriado = await Tempo.getFeriado(item.data);
+						let tempo = {
+							data: item.data,
+							hora: item.hora,
+							turno: await Tempo.getTurno(item.data,item.hora),
+							mes: await Tempo.getMes(datetime),
+							ano: await Tempo.getAno(datetime),
+							dia_semana: await Tempo.getDiaSemana(datetime),
+							dia: await Tempo.getDia(datetime),
+							ano_bissexto: await Tempo.isAnoBissexto(datetime),
+							dia_util: await Tempo.isDiaUtil(datetime,feriado),
+							fim_semana: await Tempo.isFimSemana(datetime),
+							feriado: await Tempo.isFeriado(feriado),
+							pos_feriado: feriado.pos,
+							pre_feriado: feriado.pre,
+							nome_dia_semana: await Tempo.getNomeDiaSemana(datetime),
+							nome_feriado: (feriado.nome)?feriado.nome:null,
+							quinzena: await Tempo.getQuinzena(datetime),
+							nome_mes: await Tempo.getNomeMes(datetime),
+							bimestre: await Tempo.getBimestre(datetime),
+							trimestre: await Tempo.getTrimestre(datetime),
+							semestre: await Tempo.getSemestre(datetime),
+						};
+						await Tempo.create(tempo);
+					}
+				} catch (error) {
+					res.status(400).json({message: error});
+					return false;
 				}
 			}
 			return new Promise(async (resolve, reject) => {
@@ -151,12 +156,10 @@ module.exports = {
 					});
 					for(let fonte of fontes){
 						let itens = await ItensFonte.findAll({
-							attributes: ['id'],
 							where:{
 								fonte_id: fonte.id
 							}
 						});
-					
 						if(tabelas.length > 0){
 							for(const tabela of tabelas){
 								try {

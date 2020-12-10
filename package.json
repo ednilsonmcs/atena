@@ -7,8 +7,8 @@
     "node": "12.16.1"
   },
   "scripts": {
-    "start": "nodemon app/server.js",
-    "test": "",
+    "start": "node app/server.js",
+    "test": "nodemon app/server.js",
     "lint": "./node_modules/.bin/eslint .",
     "dev": "nodemon app/server.js"
   },

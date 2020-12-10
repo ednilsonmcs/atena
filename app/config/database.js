@@ -1,8 +1,8 @@
 module.exports = {
 	dialect: "mysql",
-	host: "localhost",
-	username: "root",
-	password: "32312095",
+	host: "atenaciosp.mysql.database.azure.com",
+	username: "ednilsonmcs@atenaciosp",
+	password: "@EDmcs777",
 	database: "atena",
 	timezone: "-03:00",
 	define: {
