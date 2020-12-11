@@ -6,3 +6,4 @@ node_modules/
 anotacoes.txt
 tmp
 data
+app/config/database.js
