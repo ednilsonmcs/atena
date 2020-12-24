@@ -1,3 +1,4 @@
+# To remove those files from your repository (but not from your file system) use git rm --cached <name_file> on them.
 testes
 node_modules/
 .npm

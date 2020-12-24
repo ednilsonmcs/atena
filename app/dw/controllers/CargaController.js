@@ -1,3 +1,9 @@
+const axios = require('axios').default;
+
+const api = axios.create({
+	baseURL: "https://apistemmer.herokuapp.com",
+});
+
 const connection  = require("../../database/index");
 const Fonte = require("../../arquivo/models/Fonte");
 const ItensFonte = require("../../arquivo/models/ItensFonte");
@@ -7,6 +13,7 @@ const JunkDescricao = require("../../dw/models/JunkDescricao");
 const DescricaoFinalizacao = require("../../dw/models/DescricaoFinalizacao");
 const Chamado = require("../../dw/models/Chamado");
 const Tipo = require("../../dw/models/Tipo");
+const Termo = require("../models/Termo");
 
 module.exports = {
 	async store(req,res){
@@ -51,7 +58,28 @@ module.exports = {
 		
 		async function cargaDimTermo(itens) {
 			for(const item of itens){
-	
+				let termos = ((await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))))).split(" ")).filter((value, index, arr) => { return value != ''; });
+				for(const termo of termos){
+					let tipo = await Tipo.findOne({ attributes: ['id'], where: {nome: termo}});
+					if(tipo === null){
+						tipo = await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'})
+					}
+
+					await axios.get('/steam?word=carro')
+					.then(function (response) {
+						// handle success
+						console.log(response);
+					})
+					.catch(function (error) {
+						// handle error
+						console.log(error);
+					})
+					.then(function () {
+						// always executed
+					});
+///steam?word=carro
+					await Termo.create({termo, termo_stem: termo, tipo_id: tipo.id});
+				}
 			}
 			return new Promise(async (resolve, reject) => {
 				if(itens != null){ resolve({message: "Carga realizada com sucesso!"});}else{reject();}
