@@ -32,7 +32,7 @@ module.exports = {
 		async function cargaFatoChamado(itens) {
 			let fato_chamado;
 			for(const item of itens){
-				let descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))));
+				let descricao_chamado = await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(item.historico))));
 				let junk_descricao = await JunkDescricao.findOne({where:{descricao_chamado}});
 				let tempo = await Tempo.findOne({ where:{ data: item.data, hora: item.hora }});
 				let endereco = await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao }});
@@ -59,25 +59,31 @@ module.exports = {
 		
 		async function cargaDimTermo(itens) {
 			for(const item of itens){
-				let termos = ((await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))))).split(" ")).filter((value, index, arr) => { return value != ''; });
+				let termos = (await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(item.historico))))).split(" ");
 				for(const termo of termos){
 					//Se o tipo não existir cria, caso contrario pega o id
-					let tipo = await Tipo.findOne({ attributes: ['id'], where: {nome: termo}});
+					let tipo = await Tipo.findOne({ attributes: ['id','tipo'], where: {nome: termo}});
 					if(tipo === null){
 						let isnum = /^\d+$/.test(termo)
 						tipo = isnum?await Tipo.create({nome: termo, marca: null, tipo: 2, descricao: 'Termo Geral Númerico'}):await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'});
 					}
 
-					//Radicalizo o termo
-					let steam = null;
-					await api.get('/steam?word='+encodeURI(termo))
-					.then(function (response) {
-						steam = response.data.steam;
-						Termo.create({termo, termo_stem: steam, tipo_id: tipo.id});
-					})
-					.catch(function (error) {
-						res.status(400).json({message: error});
-					});
+					//Só radicalizar se tipo for diferente de 2
+					if(tipo.tipo == 2){
+						Termo.create({termo, termo_stem: termo, tipo_id: tipo.id});				
+					}else{
+						//Radicalizo o termo
+						let steam = null;
+						await api.get('/steam?word='+encodeURI(termo))
+						.then(function (response) {
+							steam = response.data.steam;
+							Termo.create({termo, termo_stem: steam, tipo_id: tipo.id});
+						})
+						.catch(function (error) {
+							res.status(400).json({message: error});
+						});	
+					}
+
 				}
 			}
 			return new Promise(async (resolve, reject) => {
@@ -160,8 +166,7 @@ module.exports = {
 			for(const item of itens){
 				//Preprocessar
 				let  descricao_chamado = item.historico;
-				descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(descricao_chamado))));
-
+				descricao_chamado = await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(descricao_chamado))));
 				if(await JunkDescricao.findOne({where:{descricao_chamado: descricao_chamado}}) == null){
 					await JunkDescricao.create({ descricao_chamado: descricao_chamado });
 				}

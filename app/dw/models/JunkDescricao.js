@@ -74,9 +74,10 @@ class JunkDescricao extends Model {
 		descricao = " "+descricao+" ";
 		let words = await readFile('./app/commom/stopwords.txt');
 		words = words.toString().split(/\r?\n/);
+		
 		for(let word of words){
-			descricao = descricao.toUpperCase();
-			descricao = descricao.replace(" " + word.toUpperCase() + " ", " ");
+			let arrayTermos = (descricao.toUpperCase().split(" ")).filter((value, index, arr) => { return value != '' });
+			descricao = (arrayTermos.filter((value, index, arr) => { return value != word.toUpperCase() })).join(" ");
 		}
 
 		if(descricao.substr(0,1) == " ")
