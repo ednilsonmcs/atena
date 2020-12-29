@@ -1,7 +1,8 @@
 const axios = require('axios').default;
 
 const api = axios.create({
-	baseURL: "https://apistemmer.herokuapp.com",
+	//baseURL: "https://apistemmer.herokuapp.com",
+	baseURL: "http://localhost:5000",
 });
 
 const connection  = require("../../database/index");
@@ -60,25 +61,23 @@ module.exports = {
 			for(const item of itens){
 				let termos = ((await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))))).split(" ")).filter((value, index, arr) => { return value != ''; });
 				for(const termo of termos){
+					//Se o tipo não existir cria, caso contrario pega o id
 					let tipo = await Tipo.findOne({ attributes: ['id'], where: {nome: termo}});
 					if(tipo === null){
-						tipo = await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'})
+						let isnum = /^\d+$/.test(termo)
+						tipo = isnum?await Tipo.create({nome: termo, marca: null, tipo: 2, descricao: 'Termo Geral Númerico'}):await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'});
 					}
 
-					await axios.get('/steam?word=carro')
+					//Radicalizo o termo
+					let steam = null;
+					await api.get('/steam?word='+encodeURI(termo))
 					.then(function (response) {
-						// handle success
-						console.log(response);
+						steam = response.data.steam;
+						Termo.create({termo, termo_stem: steam, tipo_id: tipo.id});
 					})
 					.catch(function (error) {
-						// handle error
-						console.log(error);
-					})
-					.then(function () {
-						// always executed
+						res.status(400).json({message: error});
 					});
-///steam?word=carro
-					await Termo.create({termo, termo_stem: termo, tipo_id: tipo.id});
 				}
 			}
 			return new Promise(async (resolve, reject) => {

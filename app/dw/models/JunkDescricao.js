@@ -63,7 +63,7 @@ class JunkDescricao extends Model {
 
 	static async retirarPontuacao(descricao) {
 		
-		descricao = descricao.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g," ");
+		descricao = descricao.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'"<>@|]/g," ");
 		return new Promise(async (resolve, reject) => {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
 		});
