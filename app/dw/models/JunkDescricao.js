@@ -104,6 +104,13 @@ class JunkDescricao extends Model {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
 		});
 	}
+
+	static async clean(descricao){
+		descricao = await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(descricao))));
+		return new Promise(async (resolve, reject) => {
+			if(descricao != null){ resolve(descricao); }else{ reject(); }
+		});
+	}
 }
 
 module.exports = JunkDescricao;

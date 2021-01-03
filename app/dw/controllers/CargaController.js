@@ -32,7 +32,7 @@ module.exports = {
 		async function cargaFatoChamado(itens) {
 			let fato_chamado;
 			for(const item of itens){
-				let descricao_chamado = await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(item.historico))));
+				let descricao_chamado = await JunkDescricao.clean(item.historico);
 				let junk_descricao = await JunkDescricao.findOne({where:{descricao_chamado}});
 				let tempo = await Tempo.findOne({ where:{ data: item.data, hora: item.hora }});
 				let endereco = await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao }});
@@ -59,7 +59,7 @@ module.exports = {
 		
 		async function cargaDimTermo(itens) {
 			for(const item of itens){
-				let termos = (await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(item.historico))))).split(" ");
+				let termos = (await JunkDescricao.clean(item.historico)).split(" ");
 				for(const termo of termos){
 					//Se o tipo não existir cria, caso contrario pega o id
 					let tipo = await Tipo.findOne({ attributes: ['id','tipo'], where: {nome: termo}});
@@ -166,7 +166,7 @@ module.exports = {
 			for(const item of itens){
 				//Preprocessar
 				let  descricao_chamado = item.historico;
-				descricao_chamado = await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(descricao_chamado))));
+				descricao_chamado = await JunkDescricao.clean(descricao_chamado);
 				if(await JunkDescricao.findOne({where:{descricao_chamado: descricao_chamado}}) == null){
 					await JunkDescricao.create({ descricao_chamado: descricao_chamado });
 				}
