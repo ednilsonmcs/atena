@@ -60,30 +60,31 @@ module.exports = {
 		async function cargaDimTermo(itens) {
 			for(const item of itens){
 				let termos = (await JunkDescricao.clean(item.historico)).split(" ");
-				for(const termo of termos){
-					//Se o tipo não existir cria, caso contrario pega o id
-					let tipo = await Tipo.findOne({ attributes: ['id','tipo'], where: {nome: termo}});
-					if(tipo === null){
-						let isnum = /^\d+$/.test(termo)
-						tipo = isnum?await Tipo.create({nome: termo, marca: null, tipo: 2, descricao: 'Termo Geral Númerico'}):await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'});
+				for(const termo of termos){				
+					if(await Termo.findOne({attributes: ['id'], where: {termo}}) === null){
+						//Se o tipo não existir cria, caso contrario pega o id
+						let tipo = await Tipo.findOne({ attributes: ['id','tipo'], where: {nome: termo}});
+						if(tipo === null){
+							let isnum = /^\d+$/.test(termo)
+							tipo = isnum?await Tipo.create({nome: termo, marca: null, tipo: 2, descricao: 'Termo Númerico'}):await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'});
+						}else{
+							//Só radicalizar se tipo for diferente de 2
+							if(tipo.tipo == 2){							
+								await Termo.create({termo, termo_stem: termo, tipo_id: tipo.id});				
+							}else{
+								//Radicalizo o termo
+								let steam = null;
+								await api.get('/steam?word='+encodeURI(termo))
+								.then(function (response) {
+									steam = (response.data.steam).toUpperCase();
+									Termo.create({termo, termo_stem: steam, tipo_id: tipo.id});
+								})
+								.catch(function (error) {
+									res.status(400).json({message: error});
+								});	
+							}
+						}
 					}
-
-					//Só radicalizar se tipo for diferente de 2
-					if(tipo.tipo == 2){
-						Termo.create({termo, termo_stem: termo, tipo_id: tipo.id});				
-					}else{
-						//Radicalizo o termo
-						let steam = null;
-						await api.get('/steam?word='+encodeURI(termo))
-						.then(function (response) {
-							steam = response.data.steam;
-							Termo.create({termo, termo_stem: steam, tipo_id: tipo.id});
-						})
-						.catch(function (error) {
-							res.status(400).json({message: error});
-						});	
-					}
-
 				}
 			}
 			return new Promise(async (resolve, reject) => {
@@ -92,6 +93,13 @@ module.exports = {
 		}
 
 		async function cargaDimTipo(itens) {
+			/*
+			(1) Termo Geral
+			(2) Termo Númerico
+			(3) Moto
+			(4) Carro
+			(5) Caminhão
+			*/
 			let count = await Tipo.findAll({attributes: ['id']});
 			if(count.length == 0){
 				//Ler "Dicionário de Tipos"
@@ -184,6 +192,7 @@ module.exports = {
 					let fontes = await Fonte.findAll({
 						where:{
 							carregado: false,
+							id: fontesid
 						}
 					});
 					for(let fonte of fontes){
@@ -209,6 +218,7 @@ module.exports = {
 											await cargaDimTermo(itens);
 											break;
 										case "dim_tipo":
+											//Ver como fazer, pois aqui é os dicionários; Deve passar como parâmetro ou passar antes? Ou pegar via diretorio?
 											await cargaDimTipo(itens);
 											break;
 										case "junk_descricao":
@@ -216,7 +226,7 @@ module.exports = {
 											break;											
 									}
 								} catch (error) {
-									console.log(error)
+									console.log(error);
 								}
 							}
 							// Quando passada tabelas dimensões e fatos, só posso tentar realizar a carga das fatos depois das dimensões. Por isso as codições a seguir não estão no switch acima.
@@ -239,6 +249,7 @@ module.exports = {
 				}			
 			} catch (error) {
 				//await t.rollback();
+				console.log(error)
 				res.status(400).json({message: error});
 				return false;
 			}

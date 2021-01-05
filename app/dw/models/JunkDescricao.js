@@ -50,11 +50,13 @@ class JunkDescricao extends Model {
 	}
 		
 	static async retirarAcentos(descricao) {
+		descricao = descricao.toUpperCase();
 		const vogaisAcento = ["à", "á", "â", "ã", "è", "é", "ê", "î", "ì", "í", "ú", "ù", "û", "ò", "õ", "ô", "ó", "ç"];
 		const vogaisSemAcento = ["a", "a", "a", "a", "e", "e", "e", "i", "i", "i", "u", "u", "u", "o", "o", "o", "o", "c"];
 		let index = 0;
 		for (const vogalAcento of vogaisAcento) {
-			descricao = descricao.replace(vogalAcento, vogaisSemAcento[index++]);
+			const searchRegExp = new RegExp(vogalAcento.toUpperCase(), 'g');
+			descricao = descricao.replace(searchRegExp, vogaisSemAcento[index++].toUpperCase());
 		}
 		return new Promise(async (resolve, reject) => {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
@@ -86,20 +88,6 @@ class JunkDescricao extends Model {
 		if(descricao.substr(descricao.length) == " ")
 			descricao = descricao.substr(0,descricao.length)
 
-		return new Promise(async (resolve, reject) => {
-			if(descricao != null){ resolve(descricao); }else{ reject(); }
-		});
-	}
-	/*
-	Remover espaços em brancos duplicados ou que estejam no inicio da string
-	*/
-	static async retirarEspacosBrancoDuplicados(descricao) {
-		const vogaisAcento = ["à", "á", "â", "ã", "è", "é", "ê", "î", "ì", "í", "ú", "ù", "û", "ò", "õ", "ô", "ó", "ç"];
-		const vogaisSemAcento = ["a", "a", "a", "a", "e", "e", "e", "i", "i", "i", "u", "u", "u", "o", "o", "o", "o", "c"];
-		let index = 0;
-		for (const vogalAcento of vogaisAcento) {
-			descricao = descricao.replace(vogalAcento, vogaisSemAcento[index++]);
-		}
 		return new Promise(async (resolve, reject) => {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
 		});
