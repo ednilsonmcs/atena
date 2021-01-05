@@ -50,11 +50,13 @@ class JunkDescricao extends Model {
 	}
 		
 	static async retirarAcentos(descricao) {
+		descricao = descricao.toUpperCase();
 		const vogaisAcento = ["à", "á", "â", "ã", "è", "é", "ê", "î", "ì", "í", "ú", "ù", "û", "ò", "õ", "ô", "ó", "ç"];
 		const vogaisSemAcento = ["a", "a", "a", "a", "e", "e", "e", "i", "i", "i", "u", "u", "u", "o", "o", "o", "o", "c"];
 		let index = 0;
 		for (const vogalAcento of vogaisAcento) {
-			descricao = descricao.replace(vogalAcento, vogaisSemAcento[index++]);
+			const searchRegExp = new RegExp(vogalAcento.toUpperCase(), 'g');
+			descricao = descricao.replace(searchRegExp, vogaisSemAcento[index++].toUpperCase());
 		}
 		return new Promise(async (resolve, reject) => {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
@@ -63,7 +65,7 @@ class JunkDescricao extends Model {
 
 	static async retirarPontuacao(descricao) {
 		
-		descricao = descricao.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g," ");
+		descricao = descricao.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'"<>@|]/g," ");
 		return new Promise(async (resolve, reject) => {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
 		});
@@ -74,9 +76,10 @@ class JunkDescricao extends Model {
 		descricao = " "+descricao+" ";
 		let words = await readFile('./app/commom/stopwords.txt');
 		words = words.toString().split(/\r?\n/);
+		
 		for(let word of words){
-			descricao = descricao.toUpperCase();
-			descricao = descricao.replace(" " + word.toUpperCase() + " ", " ");
+			let arrayTermos = (descricao.toUpperCase().split(" ")).filter((value, index, arr) => { return value != '' });
+			descricao = (arrayTermos.filter((value, index, arr) => { return value != word.toUpperCase() })).join(" ");
 		}
 
 		if(descricao.substr(0,1) == " ")
@@ -88,7 +91,14 @@ class JunkDescricao extends Model {
 		return new Promise(async (resolve, reject) => {
 			if(descricao != null){ resolve(descricao); }else{ reject(); }
 		});
-    }
+	}
+
+	static async clean(descricao){
+		descricao = await JunkDescricao.retirarStopWords(await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(descricao))));
+		return new Promise(async (resolve, reject) => {
+			if(descricao != null){ resolve(descricao); }else{ reject(); }
+		});
+	}
 }
 
 module.exports = JunkDescricao;

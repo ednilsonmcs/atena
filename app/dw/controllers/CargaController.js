@@ -1,3 +1,10 @@
+const axios = require('axios').default;
+
+const api = axios.create({
+	//baseURL: "https://apistemmer.herokuapp.com",
+	baseURL: "http://localhost:5000",
+});
+
 const connection  = require("../../database/index");
 const Fonte = require("../../arquivo/models/Fonte");
 const ItensFonte = require("../../arquivo/models/ItensFonte");
@@ -7,6 +14,7 @@ const JunkDescricao = require("../../dw/models/JunkDescricao");
 const DescricaoFinalizacao = require("../../dw/models/DescricaoFinalizacao");
 const Chamado = require("../../dw/models/Chamado");
 const Tipo = require("../../dw/models/Tipo");
+const Termo = require("../models/Termo");
 
 module.exports = {
 	async store(req,res){
@@ -24,7 +32,7 @@ module.exports = {
 		async function cargaFatoChamado(itens) {
 			let fato_chamado;
 			for(const item of itens){
-				let descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(item.historico))));
+				let descricao_chamado = await JunkDescricao.clean(item.historico);
 				let junk_descricao = await JunkDescricao.findOne({where:{descricao_chamado}});
 				let tempo = await Tempo.findOne({ where:{ data: item.data, hora: item.hora }});
 				let endereco = await Endereco.findOne({ where:{ logradouro: item.endereco, bairro: item.bairro, municipio: item.municipio, estado: item.estado, federacao }});
@@ -51,7 +59,33 @@ module.exports = {
 		
 		async function cargaDimTermo(itens) {
 			for(const item of itens){
-	
+				let termos = (await JunkDescricao.clean(item.historico)).split(" ");
+				for(const termo of termos){				
+					if(await Termo.findOne({attributes: ['id'], where: {termo}}) === null){
+						//Se o tipo não existir cria, caso contrario pega o id
+						let tipo = await Tipo.findOne({ attributes: ['id','tipo'], where: {nome: termo}});
+						if(tipo === null){
+							let isnum = /^\d+$/.test(termo)
+							tipo = isnum?await Tipo.create({nome: termo, marca: null, tipo: 2, descricao: 'Termo Númerico'}):await Tipo.create({nome: termo, marca: null, tipo: 1, descricao: 'Termo Geral'});
+						}else{
+							//Só radicalizar se tipo for diferente de 2
+							if(tipo.tipo == 2){							
+								await Termo.create({termo, termo_stem: termo, tipo_id: tipo.id});				
+							}else{
+								//Radicalizo o termo
+								let steam = null;
+								await api.get('/steam?word='+encodeURI(termo))
+								.then(function (response) {
+									steam = (response.data.steam).toUpperCase();
+									Termo.create({termo, termo_stem: steam, tipo_id: tipo.id});
+								})
+								.catch(function (error) {
+									res.status(400).json({message: error});
+								});	
+							}
+						}
+					}
+				}
 			}
 			return new Promise(async (resolve, reject) => {
 				if(itens != null){ resolve({message: "Carga realizada com sucesso!"});}else{reject();}
@@ -59,6 +93,13 @@ module.exports = {
 		}
 
 		async function cargaDimTipo(itens) {
+			/*
+			(1) Termo Geral
+			(2) Termo Númerico
+			(3) Moto
+			(4) Carro
+			(5) Caminhão
+			*/
 			let count = await Tipo.findAll({attributes: ['id']});
 			if(count.length == 0){
 				//Ler "Dicionário de Tipos"
@@ -133,8 +174,7 @@ module.exports = {
 			for(const item of itens){
 				//Preprocessar
 				let  descricao_chamado = item.historico;
-				descricao_chamado = await JunkDescricao.retirarAcentos(await JunkDescricao.retirarPontuacao(await JunkDescricao.extrairRepeticao(await JunkDescricao.retirarStopWords(descricao_chamado))));
-
+				descricao_chamado = await JunkDescricao.clean(descricao_chamado);
 				if(await JunkDescricao.findOne({where:{descricao_chamado: descricao_chamado}}) == null){
 					await JunkDescricao.create({ descricao_chamado: descricao_chamado });
 				}
@@ -152,6 +192,7 @@ module.exports = {
 					let fontes = await Fonte.findAll({
 						where:{
 							carregado: false,
+							id: fontesid
 						}
 					});
 					for(let fonte of fontes){
@@ -177,6 +218,7 @@ module.exports = {
 											await cargaDimTermo(itens);
 											break;
 										case "dim_tipo":
+											//Ver como fazer, pois aqui é os dicionários; Deve passar como parâmetro ou passar antes? Ou pegar via diretorio?
 											await cargaDimTipo(itens);
 											break;
 										case "junk_descricao":
@@ -184,7 +226,7 @@ module.exports = {
 											break;											
 									}
 								} catch (error) {
-									console.log(error)
+									console.log(error);
 								}
 							}
 							// Quando passada tabelas dimensões e fatos, só posso tentar realizar a carga das fatos depois das dimensões. Por isso as codições a seguir não estão no switch acima.
@@ -207,6 +249,7 @@ module.exports = {
 				}			
 			} catch (error) {
 				//await t.rollback();
+				console.log(error)
 				res.status(400).json({message: error});
 				return false;
 			}
